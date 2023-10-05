@@ -1,24 +1,52 @@
 <template>
    <div class="div">
 
-    <div class="signupDetails">
+    <form class="signupDetails">
         <h1>Sign Up</h1>
         <div class="signupBox">
-        <input type="text" placeholder="Enter First Name"><br>
-        <input type="text" placeholder="Enter Last Name"><br>
-        <input type="text" placeholder="Enter Your Email"><br>
-        <input type="text" placeholder="Enter Password"><br>
+        <input type="text" placeholder="Enter First Name" v-model="signUser.firstName" required>
+        
+        <input type="text" placeholder="Enter Last Name" v-model="signUser.lastName" required>
 
-        <button id="btn" >Create account </button>
+        <input type="email" placeholder="Enter Your Email" v-model="signUser.email" required>
+        
+        <input type="text" placeholder="Enter Password" v-model="signUser.password" required>
+      
+        <select class="formRole" v-model="signUser.roleId" required>
+            <option>Select A Role</option>
+            <option v-for="role in roles" :key="role.id" :value="role.id">{{ role.name }}</option>
+          </select>
+
+        <button id="btn" @click="createAccount">Create account </button>
         <div>
-            <p>Already a Member  ?</p>
+            <p>Already a Member ?</p>
             <router-link to="/"><a>Log In</a></router-link>
         </div>
-    </div>
+   
          
     </div>
+</form>
    </div>
 </template>
+
+<script setup>
+import { ref, onMounted } from 'vue';
+import { useStore } from 'vuex';
+import {signupApi } from '../composables/signup.js';
+const store = useStore();
+const roles = ref([]);
+
+onMounted(() => {
+  store.dispatch('fetchRoles').then(() => {
+    roles.value = store.getters.getRoles; 
+  });
+});
+
+
+const {createAccount , signUser } =signupApi();
+
+
+</script>
 
 <style scoped>
 *{
@@ -34,6 +62,7 @@
     flex-direction: column;
     justify-content: center;
 }
+
 
 .signupDetails {
     background-color: white;
@@ -53,6 +82,18 @@
     flex-direction: column;
 }
 .signupBox input {
+    padding: .7rem;
+    margin: .4rem .7rem;
+    font-size: 1.4rem;
+    border-radius: .4rem;
+}
+select{
+    padding: .7rem;
+    margin: .4rem .7rem;
+    font-size: 1.4rem;
+    border-radius: .4rem;
+}
+option{
     padding: .7rem;
     margin: .4rem .7rem;
     font-size: 1.4rem;

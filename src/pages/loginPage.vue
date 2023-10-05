@@ -2,10 +2,9 @@
     <div class="div">
         <div class="loginDiv">
             <h2>Login Now</h2>
-
             <div class="loginDetails">
-                <input type="text" placeholder="Enter Your Email"><br>
-                <input type="text" placeholder="Enter Your password">
+                <input type="email" placeholder="Enter Your Email" ><br>
+                <input type="text" placeholder="Enter Your password"  >
                 <button id='btn'>Login</button>
                 <div>
                     <p>Don't have an account ?</p>
@@ -48,7 +47,7 @@
 
 .loginDetails input {
     padding: 1rem;
-    margin: 1rem;
+    margin: .6rem;
     font-size: 1.4rem;
     border-radius: .4rem;
 
