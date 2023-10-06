@@ -35,7 +35,7 @@
     padding: 1rem;
     width: 30%;
     border-radius: .4rem;
-    box-shadow: 5px 5px grey;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     margin-left: 35%;
 
     margin-right: auto;
