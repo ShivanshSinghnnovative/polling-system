@@ -31,7 +31,7 @@ export default createStore({
 
         state.signErr = null
         state.signupError = null
-        await axios.post('https://pollapi.innotechteam.in/user/register', {
+        await axios.post(`${process.env.VUE_APP_BASE_URL}user/register`, {
           email: email,
           firstName: firstName,
           lastName: lastName,
@@ -52,7 +52,7 @@ export default createStore({
     async login({ state }, { email, password }) {
       try {
         state.loginError = null
-        await axios.post('https://pollapi.innotechteam.in/user/login', {
+        await axios.post(`${process.env.VUE_APP_BASE_URL}user/login`, {
           email: email,
           password: password,
         });
