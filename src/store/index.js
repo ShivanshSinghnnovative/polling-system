@@ -5,12 +5,13 @@ export default createStore({
     roles: [],
     signupError: null,
     signErr: null,
+    loginError: null,
   },
   mutations: {
     setRoles(state, roles) {
       state.roles = roles;
     },
-   
+
   },
   actions: {
     async fetchRoles({ commit }) {
@@ -24,18 +25,18 @@ export default createStore({
       }
     },
 
-    
+
     async signup({ state }, { email, firstName, lastName, roleId, password }) {
       try {
-        
+
         state.signErr = null
         state.signupError = null
         await axios.post('https://pollapi.innotechteam.in/user/register', {
-                  email: email, 
-                  firstName: firstName, 
-                  lastName: lastName,
-                  roleId: roleId, 
-                  password: password
+          email: email,
+          firstName: firstName,
+          lastName: lastName,
+          roleId: roleId,
+          password: password
         });
       } catch (error) {
         if (error.response.data.errors) {
@@ -46,9 +47,24 @@ export default createStore({
           state.signupError = null
         }
       }
+    },
+
+    async login({ state }, { email, password }) {
+      try {
+        state.loginError = null
+        await axios.post('https://pollapi.innotechteam.in/user/login', {
+          email: email,
+          password: password,
+        });
+      }
+      catch (error) {
+        console.log(error);
+        console.log("ldsnfksd", state)
+        state.loginError = error.response.data.message
+      }
     }
-   
-   
+
+
   },
   getters: {
     getRoles: (state) => state.roles,

@@ -1,5 +1,5 @@
 <template>
-    <div class="div">
+    <div class="signupContainer">
 
         <form class="signupDetails" @submit.prevent="createAccount">
             <h1>Sign Up</h1>
@@ -8,12 +8,24 @@
                 <div class="errors" v-if="(signUser.firstName.trim().length < 5) && signUpErr.length > 0">Firstname length
                     should be greater than 5</div>
                 <input type="text" placeholder="Enter Last Name" v-model="signUser.lastName" required>
-                <div class="errors" v-if="(signUser.lastName.trim().length < 5) && signUpErr.length > 0">Lastname length should
+                <div class="errors" v-if="(signUser.lastName.trim().length < 5) && signUpErr.length > 0">Lastname length
+                    should
                     be greater than 5</div>
                 <input type="email" placeholder="Enter Your Email" v-model="signUser.email" required>
-                <div class="errors" v-if="(signUser.email.trim().length < 5) && emailCheck.length != 0">Email is invalid </div>
-                <input type="password" placeholder="Enter Password" v-model="signUser.password" required>
-                <div class="errors" v-if="(signUser.password.trim().length < 8) && signUpErr.length > 0">Password length should
+                <div class="errors" v-if="(signUser.email.trim().length < 5) && emailCheck.length != 0">Email is invalid
+                </div>
+
+                <div class="passwordInput" v-if="hidePassword">
+                    <input id="passBorder" type="password" placeholder="Enter Password" v-model="signUser.password"
+                        required>
+                    <i class="fa-solid fa-eye" id="eye" @click="togglePassword"></i>
+                </div>
+                <div class="passwordInput" v-else>
+                    <input id="passBorder" type="input" placeholder="Enter Password" v-model="signUser.password" required>
+                    <i class="fa fa-eye-slash" id="eye" @click="togglePassword"></i>
+                </div>
+                <div class="errors" v-if="(signUser.password.trim().length < 8) && signUpErr.length > 0">Password length
+                    should
                     be greater than 8</div>
                 <div class="errors" v-if="(signUser.password.trim().length > 8) && passwordCheck.length != 0">Password must
                     contain at least one digit, one lowercase letter, and one uppercase letter</div>
@@ -23,17 +35,17 @@
                     <option v-for="role in roles" :key="role.id" :value="role.id">{{ role.name }}</option>
                 </select>
 
-                <div class="errors" v-if="userExit.length !=0" >User already exist</div>
+                <div class="errors" v-if="userExit.length != 0">User already exist</div>
                 <button id="btn">
                     <span v-if="isLoading"><i class="fa fa-spinner fa-spin"></i></span>
                     <span v-if="!isLoading">Create account</span>
                 </button>
                 <div v-if="isSubmitted" class="modal">
                     <div class="modal-content">
-                <sucessSignup >
-                    <template v-slot:content>You have successfully registered</template>
-                </sucessSignup>
-                </div>
+                        <sucessSignup>
+                            <template v-slot:content>You have successfully registered</template>
+                        </sucessSignup>
+                    </div>
                 </div>
                 <div>
                     <p>Already a Member ?</p>
@@ -60,7 +72,7 @@ onMounted(() => {
 });
 
 
-const { createAccount, signUser, signUpErr, isLoading, passwordCheck, emailCheck, isSubmitted ,userExit} = signupApi(store);
+const { createAccount, signUser, signUpErr, isLoading, passwordCheck, emailCheck, isSubmitted, userExit, togglePassword, hidePassword } = signupApi(store);
 
 
 
@@ -69,6 +81,67 @@ const { createAccount, signUser, signUpErr, isLoading, passwordCheck, emailCheck
 <style scoped>
 * {
     font-family: sans-serif;
+}
+
+select {
+
+    background-color: white;
+    border: thin solid rgb(0, 0, 0);
+    border-radius: 4px;
+    display: inline-block;
+    font: inherit;
+    line-height: 1.5em;
+    padding: 0.5em 3.5em 0.5em 1em;
+    margin: 0;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+select.formRole {
+    background-image:
+        linear-gradient(45deg, transparent 50%, black 50%),
+        linear-gradient(135deg, black 50%, transparent 50%),
+        linear-gradient(to right, lightgray, lightgray);
+    background-position:
+        calc(100% - 20px) calc(1em + 2px),
+        calc(100% - 15px) calc(1em + 2px),
+        100% 0;
+    background-size:
+        5px 5px,
+        5px 5px,
+        2.5em 2.5em;
+    background-repeat: no-repeat;
+}
+
+#eye {
+    cursor: pointer;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: .2rem .7rem;
+}
+
+#passBorder {
+    border: none;
+    padding-left: 0;
+}
+
+input:focus {
+    outline: none;
+}
+
+.passwordInput {
+    border: 2px solid black;
+    text-align: left;
+
+    margin: 0rem .7rem;
+    display: flex;
+    justify-content: space-between;
+    border-radius: .4rem;
 }
 
 .modal {
@@ -81,21 +154,24 @@ const { createAccount, signUser, signUpErr, isLoading, passwordCheck, emailCheck
     display: flex;
     justify-content: center;
     align-items: center;
-  }
-  
-  .modal-content {
+}
+
+.modal-content {
     background-color: white;
     padding: 20px;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     text-align: center;
-  }
-.errors {
-    color: red;
-    font-size: 10px;
 }
 
-.div {
+.errors {
+    color: red;
+    font-size: 19px;
+    text-align: left;
+    padding-left: .8rem;
+}
+
+.signupContainer {
     width: 101%;
     height: 100.5vh;
     background-color: rgb(235, 235, 235);
@@ -135,7 +211,7 @@ const { createAccount, signUser, signUpErr, isLoading, passwordCheck, emailCheck
 
 select {
     padding: .7rem;
-    margin: .4rem .7rem;
+    margin: .6rem .7rem;
     font-size: 1.4rem;
     border-radius: .4rem;
 }
@@ -161,4 +237,114 @@ option {
 a {
     color: green;
     cursor: pointer;
-}</style>
+
+}
+
+@media screen and (min-width:1600px) and (max-width:2561px) {
+
+    p {
+        font-size: 1.5rem;
+    }
+
+    a {
+        font-size: 1.2rem;
+    }
+}
+
+@media screen and (min-width:769px) and (max-width:1024px) {
+    .passwordInput {
+        width: 92%;
+    }
+
+    #passBorder {
+        width: 80%;
+
+    }
+
+}
+
+@media screen and (min-width:426px) and (max-width:769px) {
+    .passwordInput {
+        width: 94%;
+    }
+
+    .signupBox input {
+        font-size: 16px;
+    }
+
+    #passBorder {
+        width: 80%;
+
+    }
+
+    #btn {
+        font-size: 16px;
+    }
+
+    p {
+        font-size: 1rem;
+    }
+
+    a {
+        font-size: 1rem;
+    }
+
+    .signupDetails {
+        width: 60%;
+        margin-left: 20%;
+
+    }
+
+    .div {
+        width: 102%;
+    }
+
+}
+
+@media screen and (min-width:320px) and (max-width:426px) {
+    .passwordInput {
+        width: 92%;
+        padding: 0;
+    }
+
+    .div {
+        width: 103%;
+    }
+
+    .signupBox input {
+        padding: .5rem;
+        font-size: 16px;
+    }
+
+    #passBorder {
+        width: 80%;
+
+    }
+
+    #btn {
+        font-size: 16px;
+    }
+
+    p {
+        font-size: .7rem;
+    }
+
+    a {
+        font-size: .7rem;
+    }
+
+    .signupDetails {
+
+        width: 78%;
+        margin-left: 9%;
+
+    }
+
+    .errors {
+        font-size: 10px;
+        text-align: left;
+        padding-left: .8rem;
+    }
+
+}
+</style>
