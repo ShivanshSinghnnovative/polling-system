@@ -18,12 +18,13 @@
                 <div class="passwordInput" v-if="!hidePassword">
                     <input id="passBorder" type="password" placeholder="Enter Password" v-model="signUser.password"
                         required>
-                    <i class="fa fa-eye-slash" id="eye" @click="togglePassword"></i>
-
+                   
+                    <font-awesome-icon icon="fa-solid fa-eye-slash" id="eye" @click="togglePassword" />
                 </div>
                 <div class="passwordInput" v-else>
                     <input id="passBorder" type="input" placeholder="Enter Password" v-model="signUser.password" required>
-                    <i class="fa-solid fa-eye" id="eye" @click="togglePassword"></i>
+                    <font-awesome-icon icon="fa-solid fa-eye" id="eye" @click="togglePassword" />
+                   
                 </div>
                 <div class="errors" v-if="(signUser.password.trim().length < 8) && signUpErr.length > 0">Password length
                     should
@@ -123,7 +124,8 @@ select.formRole {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: .2rem .7rem;
+    margin: 1.2rem .7rem;
+    
 }
 
 #passBorder {
