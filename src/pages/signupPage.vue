@@ -15,14 +15,15 @@
                 <div class="errors" v-if="(signUser.email.trim().length < 5) && emailCheck.length != 0">Email is invalid
                 </div>
 
-                <div class="passwordInput" v-if="hidePassword">
+                <div class="passwordInput" v-if="!hidePassword">
                     <input id="passBorder" type="password" placeholder="Enter Password" v-model="signUser.password"
                         required>
-                    <i class="fa-solid fa-eye" id="eye" @click="togglePassword"></i>
+                    <i class="fa fa-eye-slash" id="eye" @click="togglePassword"></i>
+
                 </div>
                 <div class="passwordInput" v-else>
                     <input id="passBorder" type="input" placeholder="Enter Password" v-model="signUser.password" required>
-                    <i class="fa fa-eye-slash" id="eye" @click="togglePassword"></i>
+                    <i class="fa-solid fa-eye" id="eye" @click="togglePassword"></i>
                 </div>
                 <div class="errors" v-if="(signUser.password.trim().length < 8) && signUpErr.length > 0">Password length
                     should
