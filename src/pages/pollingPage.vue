@@ -1,13 +1,7 @@
 <template>
-    <div class="bigBoxx">
-        polling list
-    </div>
+  <div class="bigBoxx">polling list</div>
 </template>
 
-<script setup>
-
-
-
-</script>
+<script setup></script>
 
 <style scoped></style>

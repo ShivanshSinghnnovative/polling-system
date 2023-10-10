@@ -62,20 +62,20 @@ export const signupApi = () => {
     const passwordCheck = ref('')
     const emailCheck = ref('')
     const userExist = ref('')
- 
+
     onMounted(async () => {
         try {
-          const rolesData = await store.dispatch('fetchRoles');
-          roles.value = rolesData;
+            const rolesData = await store.dispatch('fetchRoles');
+            roles.value = rolesData;
         } catch (error) {
-          console.error('Error fetching roles:', error);
+            console.error('Error fetching roles:', error);
         }
-      });
-    
-      const rolesData = computed(() => {
+    });
+
+    const rolesData = computed(() => {
         return store.getters.getRoles;
-      });
-    
+    });
+
     const signErr = computed(() => {
         return store.state.signErr
     })
@@ -145,7 +145,7 @@ export const signupApi = () => {
         userExist,
         togglePassword,
         hidePassword,
-        roles:rolesData
+        roles: rolesData
     }
 }
 
