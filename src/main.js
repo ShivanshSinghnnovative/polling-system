@@ -5,14 +5,15 @@ import store from './store'
 import { library } from "@fortawesome/fontawesome-svg-core";
 
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-
 import {
-  faEye,
-  faEyeSlash
+    faEye,
+    faEyeSlash,
+    faSpinner
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(faEye);
 library.add(faEyeSlash);
+library.add(faSpinner);
 
 
 

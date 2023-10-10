@@ -1,24 +1,21 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import login from '../pages/loginPage.vue'
-import signup from '../pages/signupPage.vue'
-import polling from '../pages/pollingPage.vue'
 const routes = [
   {
     path: '/',
     name: 'login',
-    component: login
+    component: () => import('../pages/loginPage.vue')
   },
   {
     path: '/signup',
     name: 'signup',
-    component: signup
+    component: () => import('../pages/signupPage.vue')
   },
   {
     path: '/polling',
     name: 'polling',
-    component: polling
+    component: () => import('../pages/pollingPage.vue')
   }
-]
+];
 const router = createRouter({
   history: createWebHashHistory(process.env.BASE_URL),
   routes

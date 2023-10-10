@@ -3,13 +3,19 @@ import axios from "axios";
 export default createStore({
   state: {
     roles: [],
-    signupError: null,
     signErr: null,
     loginError: null,
   },
   mutations: {
     setRoles(state, roles) {
       state.roles = roles;
+    },
+    setLoginError(state, error) {
+      state.loginError = error;
+    },
+
+    clearLoginError(state) {
+      state.loginError = null;
     },
 
   },
@@ -26,11 +32,11 @@ export default createStore({
     },
 
 
-    async signup({ state }, { email, firstName, lastName, roleId, password }) {
-      try {
 
+    async signup({ state }, { email, firstName, lastName, roleId, password }) {
+
+      try {
         state.signErr = null
-        state.signupError = null
         await axios.post(`${process.env.VUE_APP_BASE_URL}user/register`, {
           email: email,
           firstName: firstName,
@@ -39,30 +45,25 @@ export default createStore({
           password: password
         });
       } catch (error) {
-        if (error.response.data.errors) {
-          state.signupError = error.response.data.errors
-        }
-        else {
-          state.signErr = error.response.data
-          state.signupError = null
-        }
+
+        state.signErr = error.response.data
+
+        console.log(error)
       }
     },
 
-    async login({ state }, { email, password }) {
+    async login({ commit }, { email, password }) {
       try {
-        state.loginError = null
+        commit('clearLoginError');
         await axios.post(`${process.env.VUE_APP_BASE_URL}user/login`, {
           email: email,
           password: password,
         });
-      }
-      catch (error) {
+      } catch (error) {
         console.log(error);
-        console.log("ldsnfksd", state)
-        state.loginError = error.response.data.message
+        commit('setLoginError', error.response.data.message);
       }
-    }
+    },
 
 
   },

@@ -9,37 +9,33 @@
                     should be greater than 5</div>
                 <input type="text" placeholder="Enter Last Name" v-model="signUser.lastName" required>
                 <div class="errors" v-if="(signUser.lastName.trim().length < 5) && signUpErr.length > 0">Lastname length
-                    should
-                    be greater than 5</div>
+                    should be greater than 5</div>
                 <input type="email" placeholder="Enter Your Email" v-model="signUser.email" required>
-                <div class="errors" v-if="(signUser.email.trim().length < 5) && emailCheck.length != 0">Email is invalid
+                <div class="errors" v-if="(signUser.email.trim().length < 5) && emailCheck.length != 0">
+                    {{ emailCheck }}
                 </div>
 
-                <div class="passwordInput" v-if="!hidePassword">
-                    <input id="passBorder" type="password" placeholder="Enter Password" v-model="signUser.password"
-                        required>
-                   
-                    <font-awesome-icon icon="fa-solid fa-eye-slash" id="eye" @click="togglePassword" />
+                <div class="passwordInput">
+                    <input id="passBorder" :type="hidePassword ? 'text' : 'password'" placeholder="Enter Password"
+                        v-model="signUser.password" required>
+                    <font-awesome-icon :icon="hidePassword ? 'fa-solid fa-eye' : 'fa-solid fa-eye-slash'" id="eye"
+                        @click="togglePassword" />
                 </div>
-                <div class="passwordInput" v-else>
-                    <input id="passBorder" type="input" placeholder="Enter Password" v-model="signUser.password" required>
-                    <font-awesome-icon icon="fa-solid fa-eye" id="eye" @click="togglePassword" />
-                   
-                </div>
-                <div class="errors" v-if="(signUser.password.trim().length < 8) && signUpErr.length > 0">Password length
-                    should
-                    be greater than 8</div>
-                <div class="errors" v-if="(signUser.password.trim().length > 8) && passwordCheck.length != 0">Password must
-                    contain at least one digit, one lowercase letter, and one uppercase letter</div>
+
+                <div class="errors" v-if="(signUser.password.trim().length < 8) && signUpErr.length > 0">
+                    Password length should be greater than 8</div>
+                <div class="errors" v-if="(signUser.password.trim().length >= 8) && passwordCheck.length != 0">
+                    {{ passwordCheck }}</div>
 
                 <select class="formRole" v-model="signUser.roleId" required>
                     <option>Select A Role</option>
                     <option v-for="role in roles" :key="role.id" :value="role.id">{{ role.name }}</option>
                 </select>
 
-                <div class="errors" v-if="userExit.length != 0">User already exist</div>
+                <div class="errors" v-if="userExist.length != 0">{{ userExist }}</div>
                 <button id="btn">
-                    <span v-if="isLoading"><i class="fa fa-spinner fa-spin"></i></span>
+                    <span v-if="isLoading">
+                        <font-awesome-icon icon="fa-solid fa-spinner" /></span>
                     <span v-if="!isLoading">Create account</span>
                 </button>
                 <div v-if="isSubmitted" class="modal">
@@ -59,22 +55,12 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
-import { useStore } from 'vuex';
-import { signupApi } from '../composables/signup.js';
+import { signupApi } from '../composables/loginsignup.js';
 import sucessSignup from '../components/sucessSignupModal.vue'
 
-const store = useStore();
-const roles = ref([]);
-
-onMounted(() => {
-    store.dispatch('fetchRoles').then(() => {
-        roles.value = store.getters.getRoles;
-    });
-});
 
 
-const { createAccount, signUser, signUpErr, isLoading, passwordCheck, emailCheck, isSubmitted, userExit, togglePassword, hidePassword } = signupApi(store);
+const { createAccount, signUser, roles, signUpErr, isLoading, passwordCheck, emailCheck, isSubmitted, userExist, togglePassword, hidePassword } = signupApi();
 
 
 
@@ -125,7 +111,7 @@ select.formRole {
     justify-content: center;
     align-items: center;
     margin: 1.2rem .7rem;
-    
+
 }
 
 #passBorder {

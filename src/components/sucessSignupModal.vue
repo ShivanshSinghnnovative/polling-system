@@ -3,17 +3,17 @@
         <div class="centerDiv">
             <slot name="content"></slot>
 
-            <div> <button @click="go">ok </button> </div>
+            <div> <button @click="sucessfullSignup">GO</button> </div>
         </div>
     </div>
 </template>
 
 <script setup>
-import { useStore } from 'vuex';
-import { signupApi } from '../composables/signup.js';
-const store = useStore();
+// import { useStore } from 'vuex';
+import { signupApi } from '../composables/loginsignup.js';
 
-const { go } = signupApi(store);
+
+const { sucessfullSignup } = signupApi();
 
 </script>
 
@@ -34,6 +34,7 @@ button {
     border-radius: 5px;
     font-size: 1rem;
     background-color: white;
+    cursor: pointer;
 }
 
 @media screen and (min-width:320px) and (max-width:426px) {

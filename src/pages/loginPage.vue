@@ -3,9 +3,9 @@
         <div class="loginDiv">
             <h2>Login Now</h2>
             <div class="loginDetails">
-                <input type="email" placeholder="Enter Your Email" v-model="loginUser.email" required><br>
-                <input type="text" placeholder="Enter Your password" v-model="loginUser.password" required>
-                <span class="errors">{{ loginError }} </span>
+                <input type="email" placeholder="Enter Your Email" v-model="loginUserDetails.email" required><br>
+                <input type="password" placeholder="Enter Your password" v-model="loginUserDetails.password" required>
+                <span class="errors">{{ loginErr }} </span>
                 <button id='btn'>Login</button>
                 <div>
                     <p>Don't have an account ?</p>
@@ -17,11 +17,22 @@
 </template>
 
 <script setup>
-import { useStore } from 'vuex';
-import { loginApi } from '../composables/signup.js';
-const store = useStore();
+import { loginApi } from '../composables/loginsignup.js';
+const { loginAccount, loginUserDetails, loginErr } = loginApi()
 
-const { loginAccount, loginUser, loginError } = loginApi(store)
+import { useStore } from 'vuex';
+import { onMounted } from 'vue';
+
+const store = useStore();
+const clearLoginError = () => {
+    store.commit('clearLoginError');
+};
+onMounted(() => {
+    clearLoginError();
+})
+
+
+
 
 </script>
 
@@ -97,9 +108,7 @@ a {
 }
 
 @media screen and (min-width:1600px) and (max-width:2560px) {
-    .loginDiv {
-        height: 40%;
-    }
+
 
     h2 {
         font-size: 3rem;
