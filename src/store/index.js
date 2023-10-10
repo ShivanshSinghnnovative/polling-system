@@ -42,9 +42,7 @@ export default createStore({
           password: password
         });
       } catch (error) {
-
         state.signErr = error.response.data
-
         console.log(error)
       }
     },

@@ -1,41 +1,41 @@
 <template>
-    <div class="signupContainer">
-        <form class="signupDetails" @submit.prevent="createAccount">
-            <h1>Sign Up</h1>
-            <div class="signupBox">
-                <input type="text" placeholder="Enter First Name" v-model="signUser.firstName" required>
-                <div class="errors" v-if="(signUser.firstName.trim().length < 5) && signUpErr.length > 0">Firstname length
+    <div class="w-full h-screen bg-gray-200 text-center flex flex-col justify-center">
+        <form class="bg-white p-6 w-2/5 rounded-md shadow-md m-auto" @submit.prevent="createAccount">
+            <h1 class=" text-3xl font-bold p-4">Sign Up</h1>
+            <div class="flex flex-col">
+                <input type="text" class="border-black border-2 p-2 m-4 mb-2 text-xl  rounded-md w-5/5 " placeholder="Enter First Name" v-model="signUser.firstName" required>
+                <div class="text-red-500 text-left text-lg pl-2" v-if="(signUser.firstName.trim().length < 5) && signUpErr.length > 0">Firstname length
                     should be greater than 5</div>
-                <input type="text" placeholder="Enter Last Name" v-model="signUser.lastName" required>
-                <div class="errors" v-if="(signUser.lastName.trim().length < 5) && signUpErr.length > 0">Lastname length
+                <input type="text" class="border-black border-2 p-2 m-4 mb-2 text-xl  rounded-md w-5/5 " placeholder="Enter Last Name" v-model="signUser.lastName" required>
+                <div class="text-red-500 text-left text-lg pl-2" v-if="(signUser.lastName.trim().length < 5) && signUpErr.length > 0">Lastname length
                     should be greater than 5</div>
-                <input type="email" placeholder="Enter Your Email" v-model="signUser.email" required>
-                <div class="errors" v-if="(signUser.email.trim().length < 5) && emailCheck.length != 0">
+                <input type="email" class="border-black border-2 p-2 m-4 mb-2 text-xl  rounded-md w-5/5 " placeholder="Enter Your Email" v-model="signUser.email" required>
+                <div class="text-red-500 text-left text-lg pl-2" v-if="(signUser.email.trim().length < 5) && emailCheck.length != 0">
                     {{ emailCheck }}
                 </div>
-                <div class="passwordInput">
+                <div class="border-black border-2 p-2 m-4 mb-2 text-xl flex justify-between  rounded-md w-5/5 ">
                     <input id="passBorder" :type="hidePassword ? 'text' : 'password'" placeholder="Enter Password"
                         v-model="signUser.password" required>
-                    <font-awesome-icon :icon="hidePassword ? 'fa-solid fa-eye' : 'fa-solid fa-eye-slash'" id="eye"
+                    <font-awesome-icon :icon="hidePassword ? 'fa-solid fa-eye' : 'fa-solid fa-eye-slash'" class="cursor-pointer m-4;"
                         @click="togglePassword" />
                 </div>
-                <div class="errors" v-if="(signUser.password.trim().length < 8) && signUpErr.length > 0">
+                <div class="text-red-500 text-left text-lg pl-2" v-if="(signUser.password.trim().length < 8) && signUpErr.length > 0">
                     Password length should be greater than 8</div>
-                <div class="errors" v-if="(signUser.password.trim().length >= 8) && passwordCheck.length != 0">
+                <div class="text-red-500 text-left text-lg pl-2" v-if="(signUser.password.trim().length >= 8) && passwordCheck.length != 0">
                     {{ passwordCheck }}</div>
 
-                <select class="formRole" v-model="signUser.roleId" required>
+                <select class="border-black border-2 p-2 m-4 rounded-md w-5/5" v-model="signUser.roleId" required>
                     <option>Select A Role</option>
                     <option v-for="role in roles" :key="role.id" :value="role.id">{{ role.name }}</option>
                 </select>
-                <div class="errors" v-if="userExist.length != 0">{{ userExist }}</div>
-                <button id="btn">
+                <div class="text-red-500 text-left text-lg pl-2" v-if="userExist.length != 0">{{ userExist }}</div>
+                <button class="m-4 rounded-md p-2 bg-green-700 text-white text-3xl cursor-pointer border-none">
                     <span v-if="isLoading">
                         <font-awesome-icon icon="fa-solid fa-spinner" /></span>
                     <span v-else>Create account</span>
                 </button>
-                <div v-if="openSuccesModal" class="modal">
-                    <div class="modal-content">
+                <div v-if="openSuccesModal" class="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center">
+                    <div class="bg-white p-20 rounded-md shadow-md text-center">
                         <sucessSignup>
                             <template v-slot:content>You have successfully registered</template>
                         </sucessSignup>
@@ -43,7 +43,7 @@
                 </div>
                 <div>
                     <p>Already a Member ?</p>
-                    <router-link to="/"><a>Log In</a></router-link>
+                    <router-link to="/"><a class="text-green-700 cursor-pointer mt-4">Log In</a></router-link>
                 </div>
             </div>
         </form>
@@ -57,7 +57,7 @@ import sucessSignup from '../components/sucessSignupModal.vue'
 
 const { createAccount, signUser, roles, signUpErr, isLoading, passwordCheck, emailCheck, openSuccesModal, userExist, togglePassword, hidePassword } = signupApi();
 </script>
-
+<!-- 
 <style scoped>
 * {
     font-family: sans-serif;
@@ -327,4 +327,4 @@ a {
     }
 
 }
-</style>
+</style> -->
