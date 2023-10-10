@@ -2,6 +2,8 @@ import { createStore } from "vuex";
 import axios from "axios";
 export default createStore({
   state: {
+    user: null, 
+    token: null, 
     roles: [],
     signErr: null,
     loginError: null,
@@ -13,7 +15,6 @@ export default createStore({
     setLoginError(state, error) {
       state.loginError = error;
     },
-
     clearLoginError(state) {
       state.loginError = null;
     },
@@ -30,11 +31,7 @@ export default createStore({
         console.error("Error fetching data:", error);
       }
     },
-
-
-
     async signup({ state }, { email, firstName, lastName, roleId, password }) {
-
       try {
         state.signErr = null
         await axios.post(`${process.env.VUE_APP_BASE_URL}user/register`, {
@@ -55,17 +52,20 @@ export default createStore({
     async login({ commit }, { email, password }) {
       try {
         commit('clearLoginError');
-        await axios.post(`${process.env.VUE_APP_BASE_URL}user/login`, {
+       const response =  await axios.post(`${process.env.VUE_APP_BASE_URL}user/login`, {
           email: email,
           password: password,
         });
+        console.log(response)
+        localStorage.setItem('user', JSON.stringify(response.data.user));
+        localStorage.setItem('token', JSON.stringify(response.data.token));
+
+       
       } catch (error) {
         console.log(error);
         commit('setLoginError', error.response.data.message);
       }
     },
-
-
   },
   getters: {
     getRoles: (state) => state.roles,

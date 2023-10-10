@@ -15,6 +15,4 @@ library.add(faEye);
 library.add(faEyeSlash);
 library.add(faSpinner);
 
-
-
 createApp(App).component("font-awesome-icon", FontAwesomeIcon).use(store).use(router).mount('#app')

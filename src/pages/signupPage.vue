@@ -1,6 +1,5 @@
 <template>
     <div class="signupContainer">
-
         <form class="signupDetails" @submit.prevent="createAccount">
             <h1>Sign Up</h1>
             <div class="signupBox">
@@ -14,14 +13,12 @@
                 <div class="errors" v-if="(signUser.email.trim().length < 5) && emailCheck.length != 0">
                     {{ emailCheck }}
                 </div>
-
                 <div class="passwordInput">
                     <input id="passBorder" :type="hidePassword ? 'text' : 'password'" placeholder="Enter Password"
                         v-model="signUser.password" required>
                     <font-awesome-icon :icon="hidePassword ? 'fa-solid fa-eye' : 'fa-solid fa-eye-slash'" id="eye"
                         @click="togglePassword" />
                 </div>
-
                 <div class="errors" v-if="(signUser.password.trim().length < 8) && signUpErr.length > 0">
                     Password length should be greater than 8</div>
                 <div class="errors" v-if="(signUser.password.trim().length >= 8) && passwordCheck.length != 0">
@@ -31,14 +28,13 @@
                     <option>Select A Role</option>
                     <option v-for="role in roles" :key="role.id" :value="role.id">{{ role.name }}</option>
                 </select>
-
                 <div class="errors" v-if="userExist.length != 0">{{ userExist }}</div>
                 <button id="btn">
                     <span v-if="isLoading">
                         <font-awesome-icon icon="fa-solid fa-spinner" /></span>
-                    <span v-if="!isLoading">Create account</span>
+                    <span v-else>Create account</span>
                 </button>
-                <div v-if="isSubmitted" class="modal">
+                <div v-if="openSuccesModal" class="modal">
                     <div class="modal-content">
                         <sucessSignup>
                             <template v-slot:content>You have successfully registered</template>
@@ -59,11 +55,7 @@ import { signupApi } from '../composables/loginsignup.js';
 import sucessSignup from '../components/sucessSignupModal.vue'
 
 
-
-const { createAccount, signUser, roles, signUpErr, isLoading, passwordCheck, emailCheck, isSubmitted, userExist, togglePassword, hidePassword } = signupApi();
-
-
-
+const { createAccount, signUser, roles, signUpErr, isLoading, passwordCheck, emailCheck, openSuccesModal, userExist, togglePassword, hidePassword } = signupApi();
 </script>
 
 <style scoped>
@@ -247,7 +239,6 @@ a {
 
     #passBorder {
         width: 80%;
-
     }
 
 }

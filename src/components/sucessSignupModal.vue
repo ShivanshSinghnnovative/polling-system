@@ -2,19 +2,14 @@
     <div class="bigBoxx">
         <div class="centerDiv">
             <slot name="content"></slot>
-
-            <div> <button @click="sucessfullSignup">GO</button> </div>
+            <div> <button @click="sucessfullSignup">OK</button> </div>
         </div>
     </div>
 </template>
 
 <script setup>
-// import { useStore } from 'vuex';
 import { signupApi } from '../composables/loginsignup.js';
-
-
 const { sucessfullSignup } = signupApi();
-
 </script>
 
 <style scoped>
