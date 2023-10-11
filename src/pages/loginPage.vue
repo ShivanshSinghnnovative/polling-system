@@ -1,27 +1,27 @@
 <template>
     <form class="bg-gray-200 w-full  justify-center  h-screen   text-center flex flex-col " @submit.prevent="loginAccount">
-        <div class="bg-white  p-4 m-auto w-2/5 rounded-md shadow-md ">
-            <h2 class=" text-3xl font-bold p-4">Login Now</h2>
-            <div class="p-4 flex flex-col justify-center text-center ">
-                <input type="email" placeholder="Enter Your Email" v-model="loginUserDetails.email" class="border-black border-2 p-2 m-4 mb-2 text-xl  rounded-md w-5/5 "
+        <div class="bg-white   mv:p-1 m-auto lg:w-2/5 md:w-3/5 sm:w-4/5 mv:w-4/5 xl:w-2/6 rounded-md shadow-md ">
+            <h2 class=" md:text-3xl font-bold pt-4 mv:pt-2 mv:text-lg">Login Now</h2>
+            <div class="md:p-4 flex flex-col justify-center text-center ">
+                <input type="email" placeholder="Enter Your Email" v-model="loginUserDetails.email" class="border-black border-2 md:p-2 xll:text-3xl mv:p-1 md:m-4 mv:m-2 md:mb-2 mv:mb-0 md:text-2xl mv:text-lg rounded-md w-5/5 "
                     required><br>
                
-                <div class="border-black border-2 p-2 m-4 mt-0 text-xl flex justify-between rounded-md w-5/5 ">
-                    <input  :type="hidePassword ? 'text' : 'password'" placeholder="Enter Your Password"
+                <div class="border-black border-2 md:p-2 md:text-2xl mv:text-lg mv:p-1 md:m-4 mv:m-2 mv:mt-0 md:mt-0 xll:text-3xl text-xl flex justify-between rounded-md w-5/5 ">
+                    <input  :type="hidePassword ? 'text' : 'password'" placeholder="Enter Your Password" class="outline-none w-4/5"
                         v-model="loginUserDetails.password" required>
                     <font-awesome-icon :icon="hidePassword ? 'fa-solid fa-eye' : 'fa-solid fa-eye-slash'" class="cursor-pointer"
                         @click="togglePassword" />
                 </div>
 
                 <span class="text-red-500 text-left text-lg pl-2">{{ loginErr }} </span>
-                <button class="m-4 rounded-md p-2 bg-green-700 text-white text-3xl cursor-pointer border-none">
+                <button class="md:m-4 mv:m-2 mv:mt-3 rounded-md md:p-2 mv:p-1 bg-green-700 text-white md:text-3xl mv:text-lg cursor-pointer border-none">
                     <span v-if="isLoading">
                         <font-awesome-icon icon="fa-solid fa-spinner" /></span>
                     <span v-else>Login</span>
                 </button>
                 <div>
-                    <p>Don't have an account ?</p>
-                    <router-link to="/signup"><a class="text-green-700 cursor-pointer mt-4">create an account</a></router-link>
+                    <p class="md:text-xl mv:text-sm">Don't have an account ?</p>
+                    <router-link to="/signup"><a class="text-green-700  md:text-xl mv:text-sm cursor-pointer mt-4">create an account</a></router-link>
                 </div>
             </div>
         </div>
