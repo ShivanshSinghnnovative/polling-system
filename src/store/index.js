@@ -18,7 +18,10 @@ export default createStore({
     clearLoginError(state) {
       state.loginError = null;
     },
-
+    setUser(state) {
+      state.user = JSON.parse(localStorage.getItem('user'))
+      state.token = JSON.parse(localStorage.getItem('token'))
+    }
   },
   actions: {
     async fetchRoles({ commit }) {
@@ -31,6 +34,7 @@ export default createStore({
         console.error("Error fetching data:", error);
       }
     },
+
     async signup({ state }, { email, firstName, lastName, roleId, password }) {
       try {
         state.signErr = null
@@ -46,6 +50,19 @@ export default createStore({
         console.log(error)
       }
     },
+    async addpoll({title ,option}) {
+      try {
+       
+        await axios.post(`${process.env.VUE_APP_BASE_URL}poll/add`, {
+          
+          title:title,
+          option:option,
+        });
+      } catch (error) {
+        
+        console.log(error)
+      }
+    },
 
     async login({ commit }, { email, password }) {
       try {
@@ -57,8 +74,7 @@ export default createStore({
         console.log(response)
         localStorage.setItem('user', JSON.stringify(response.data.user));
         localStorage.setItem('token', JSON.stringify(response.data.token));
-
-       
+        commit('setUser')
       } catch (error) {
         console.log(error);
         commit('setLoginError', error.response.data.message);

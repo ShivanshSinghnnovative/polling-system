@@ -1,40 +1,63 @@
 <template>
     <div class="w-full h-screen bg-gray-200 text-center flex flex-col justify-center">
-        <form class="bg-white md:p-6 mv:p-1 lg:w-2/5 rounded-md shadow-md m-auto md:w-3/5 sm:w-4/5 mv:w-5/6 " @submit.prevent="createAccount">
-            <h1 class=" md:text-3xl font-bold md:pt-1 md:p-2 mv:p-1 mv:text-lg ">Sign Up</h1>
+        <form class="bg-white md:p-6 mv:p-1 lg:w-2/5 rounded-md shadow-md m-auto md:w-3/5 sm:w-4/5 mv:w-5/6"
+            @submit.prevent="createAccount">
+            <h1 class="md:text-3xl font-bold md:pt-1 md:p-2 mv:p-1 mv:text-lg">Sign Up</h1>
             <div class="flex flex-col">
-                <input type="text" class="border-black border-2 xll:text-3xl md:p-2 mv:p-1 md:m-4 mv:m-2 mb-2 md:text-xl md:mb-1 mv:text-lg  rounded-md w-5/5 " placeholder="Enter First Name" v-model="signUser.firstName" required>
-                <div class="text-red-500 text-left mv:text-sm md:text-lg  pl-2" v-if="(signUser.firstName.trim().length < 5) && signUpErr.length > 0">Firstname length
-                    should be greater than 5</div>
-                <input type="text" class="border-black border-2 xll:text-3xl md:mb-1 md:p-2 mv:p-1 md:m-4 mv:m-2 mb-2 md:text-xl  mv:text-lg rounded-md w-5/5 " placeholder="Enter Last Name" v-model="signUser.lastName" required>
-                <div class="text-red-500 text-left mv:text-sm md:text-lg pl-2" v-if="(signUser.lastName.trim().length < 5) && signUpErr.length > 0">Lastname length
-                    should be greater than 5</div>
-                <input type="email" class="border-black border-2 xll:text-3xl md:mb-1md:p-2 mv:p-1 md:m-4 mv:m-2 md:mb-1 mb-2 md:text-xl  mv:text-lg  rounded-md w-5/5 " placeholder="Enter Your Email" v-model="signUser.email" required>
-                <div class="text-red-500 text-left mv:text-sm md:text-lg pl-2" v-if="(signUser.email.trim().length < 5) && emailCheck.length != 0">
+                <input type="text"
+                    class="border-black border-2 xll:text-3xl md:p-2 mv:p-1 md:m-4 mv:m-2 mb-2 md:text-xl md:mb-1 mv:text-lg rounded-md w-5/5"
+                    placeholder="Enter First Name" v-model="signUser.firstName" required />
+                <div class="text-red-500 text-left mv:text-sm md:text-lg pl-2"
+                    v-if="signUser.firstName.trim().length < 5 && signUpErr.length > 0">
+                    Firstname length should be greater than 5
+                </div>
+                <input type="text"
+                    class="border-black border-2 xll:text-3xl md:mb-1 md:p-2 mv:p-1 md:m-4 mv:m-2 mb-2 md:text-xl mv:text-lg rounded-md w-5/5"
+                    placeholder="Enter Last Name" v-model="signUser.lastName" required />
+                <div class="text-red-500 text-left mv:text-sm md:text-lg pl-2"
+                    v-if="signUser.lastName.trim().length < 5 && signUpErr.length > 0">
+                    Lastname length should be greater than 5
+                </div>
+                <input type="email"
+                    class="border-black border-2 xll:text-3xl md:mb-1md:p-2 mv:p-1 md:m-4 mv:m-2 md:mb-1 mb-2 md:text-xl mv:text-lg rounded-md w-5/5"
+                    placeholder="Enter Your Email" v-model="signUser.email" required />
+                <div class="text-red-500 text-left mv:text-sm md:text-lg pl-2"
+                    v-if="signUser.email.trim().length < 5 && emailCheck.length != 0">
                     {{ emailCheck }}
                 </div>
-                <div class="border-black border-2 md:p-2 mv:p-1  md:mb-1 md:m-4 mv:m-2 mb-2 md:text-xl  xll:text-3xl mv:text-lg flex justify-between  rounded-md w-5/5 ">
-                    <input  :type="hidePassword ? 'text' : 'password'" placeholder="Enter Password" class="outline-none w-4/5"
-                        v-model="signUser.password" required>
-                    <font-awesome-icon :icon="hidePassword ? 'fa-solid fa-eye' : 'fa-solid fa-eye-slash'" class="cursor-pointer m-4;"
-                        @click="togglePassword" />
+                <div
+                    class="border-black border-2 md:p-2 mv:p-1 md:mb-1 md:m-4 mv:m-2 mb-2 md:text-xl xll:text-3xl mv:text-lg flex justify-between rounded-md w-5/5">
+                    <input :type="hidePassword ? 'text' : 'password'" placeholder="Enter Password"
+                        class="outline-none w-4/5" v-model="signUser.password" required />
+                    <font-awesome-icon :icon="hidePassword ? 'fa-solid fa-eye' : 'fa-solid fa-eye-slash'"
+                        class="cursor-pointer m-4;" @click="togglePassword" />
                 </div>
-                <div class="text-red-500 text-left mv:text-sm md:text-lg pl-2" v-if="(signUser.password.trim().length < 8) && signUpErr.length > 0">
-                    Password length should be greater than 8</div>
-                <div class="text-red-500 text-left  md:text-lg mv:text-xs pl-2" v-if="(signUser.password.trim().length >= 8) && passwordCheck.length != 0">
-                    {{ passwordCheck }}</div>
+                <div class="text-red-500 text-left mv:text-sm md:text-lg pl-2"
+                    v-if="signUser.password.trim().length < 8 && signUpErr.length > 0">
+                    Password length should be greater than 8
+                </div>
+                <div class="text-red-500 text-left md:text-lg mv:text-xs pl-2"
+                    v-if="signUser.password.trim().length >= 8 && passwordCheck.length != 0">
+                    {{ passwordCheck }}
+                </div>
 
-                <select class="border-black border-2 md:mb-1 md:p-2 mv:p-1 md:m-4 mv:m-2 rounded-md w-5/5" v-model="signUser.roleId" required>
+                <select class="border-black border-2 md:mb-1 md:p-2 mv:p-1 md:m-4 mv:m-2 rounded-md w-5/5"
+                    v-model="signUser.roleId" required>
                     <option>Select A Role</option>
-                    <option v-for="role in roles" :key="role.id" :value="role.id">{{ role.name }}</option>
+                    <option v-for="role in roles" :key="role.id" :value="role.id">
+                        {{ role.name }}
+                    </option>
                 </select>
-                <div class="text-red-500 text-left text-lg pl-2" v-if="userExist.length != 0">{{ userExist }}</div>
-                <button class="md:m-4 mv:m-2 xll:text-3xl rounded-md md:mb-1 md:p-2 mv:p-1 bg-green-700 text-white md:text-3xl mv:text-lg cursor-pointer border-none">
-                    <span v-if="isLoading">
-                        <font-awesome-icon icon="fa-solid fa-spinner" /></span>
+                <div class="text-red-500 text-left text-lg pl-2" v-if="userExist.length != 0">
+                    {{ userExist }}
+                </div>
+                <button
+                    class="md:m-4 mv:m-2 xll:text-3xl rounded-md md:mb-1 md:p-2 mv:p-1 bg-green-700 text-white md:text-3xl mv:text-lg cursor-pointer border-none">
+                    <span v-if="isLoading"> <font-awesome-icon icon="fa-solid fa-spinner" /></span>
                     <span v-else>Create account</span>
                 </button>
-                <div v-if="openSuccesModal" class="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center">
+                <div v-if="openSuccesModal"
+                    class="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center">
                     <div class="bg-white p-20 rounded-md shadow-md text-center">
                         <sucessSignup>
                             <template v-slot:content>You have successfully registered</template>
@@ -43,7 +66,8 @@
                 </div>
                 <div>
                     <p class="mv:text-sm md:text-xl md:mt-2">Already a Member ?</p>
-                    <router-link to="/"><a class="text-green-700 cursor-pointer mt-4 mv:text-sm md:text-xl">Log In</a></router-link>
+                    <router-link to="/"><a class="text-green-700 cursor-pointer mt-4 mv:text-sm md:text-xl">Log
+                            In</a></router-link>
                 </div>
             </div>
         </form>
@@ -51,9 +75,20 @@
 </template>
 
 <script setup>
-import { signupApi } from '../composables/loginsignup.js';
-import sucessSignup from '../components/sucessSignupModal.vue'
+import { signupApi } from "../composables/loginsignup.js";
+import sucessSignup from "../components/sucessSignupModal.vue";
 
-
-const { createAccount, signUser, roles, signUpErr, isLoading, passwordCheck, emailCheck, openSuccesModal, userExist, togglePassword, hidePassword } = signupApi();
+const {
+    createAccount,
+    signUser,
+    roles,
+    signUpErr,
+    isLoading,
+    passwordCheck,
+    emailCheck,
+    openSuccesModal,
+    userExist,
+    togglePassword,
+    hidePassword,
+} = signupApi();
 </script>
