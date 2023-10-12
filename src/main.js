@@ -8,11 +8,16 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import {
     faEye,
     faEyeSlash,
-    faSpinner
+    faSpinner,
+    faPlus,
+    faPen,
+    faTrash
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(faEye);
 library.add(faEyeSlash);
 library.add(faSpinner);
-
+library.add(faPlus);
+library.add(faPen);
+library.add(faTrash);
 createApp(App).component("font-awesome-icon", FontAwesomeIcon).use(store).use(router).mount('#app')

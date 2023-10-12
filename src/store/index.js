@@ -7,6 +7,7 @@ export default createStore({
     roles: [],
     signErr: null,
     loginError: null,
+    polls:[],
   },
   mutations: {
     setRoles(state, roles) {
@@ -21,6 +22,9 @@ export default createStore({
     setUser(state) {
       state.user = JSON.parse(localStorage.getItem('user'))
       state.token = JSON.parse(localStorage.getItem('token'))
+    },
+    setPoll(state, polls){
+      state.polls=polls;
     }
   },
   actions: {
@@ -31,10 +35,10 @@ export default createStore({
         );
         commit("setRoles", response.data);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error( error);
       }
     },
-
+    
     async signup({ state }, { email, firstName, lastName, roleId, password }) {
       try {
         state.signErr = null
@@ -50,17 +54,37 @@ export default createStore({
         console.log(error)
       }
     },
-    async addpoll({title ,option}) {
+    async getPolls({ commit }) {
       try {
-       
-        await axios.post(`${process.env.VUE_APP_BASE_URL}poll/add`, {
-          
-          title:title,
-          option:option,
+        const token = JSON.parse(localStorage.getItem('token'));
+        const response = await axios.get(`${process.env.VUE_APP_BASE_URL}poll/list/1?limit=4`,
+        {
+          headers: {
+            token: token
+          }
         });
-      } catch (error) {
-        
+       
+          commit('setPoll',response.data.rows)
+      
+      }catch (error) {
         console.log(error)
+      }
+    },
+    async addPoll({state}, { title, options }) {
+      try {
+        const token = JSON.parse(localStorage.getItem('token'));
+        await axios.post(`${process.env.VUE_APP_BASE_URL}poll/add`,
+          {
+            title: title,
+            options: options
+          },
+          {
+            headers: {
+              token: token
+            }
+          })
+      } catch (error) {
+        console.log(error , state)
       }
     },
 
@@ -83,6 +107,7 @@ export default createStore({
   },
   getters: {
     getRoles: (state) => state.roles,
+    getPoll: (state) => state.polls,
   },
   modules: {},
 });

@@ -4,11 +4,11 @@
             {{ user.firstName }} {{ user.lastName }}
         </div>
 
-        <div class="text-xl text-white">
+        <div class="text-2xl text-white">
             POLLING
         </div>
-        <div class="border-black bg-white p-1 mr-4">
-            <button class="  border-black text-xl  text-black" @click="logoutUser">
+        <div >
+            <button class="border-black text-xl bg-gray-200 text-black text-md rounded-md pl-4 p-1 font-medium pr-4" @click="logoutUser">
                 <router-link to="/">Logout</router-link>
             </button>
         </div>
