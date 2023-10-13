@@ -1,8 +1,8 @@
 <template>
   <div v-if="user">
-    <navBar :user="user"/>
+    <navBar :user="user" />
   </div>
-  <router-view/>
+  <router-view />
 </template>
 
 <script setup>
@@ -10,14 +10,13 @@
 import navBar from './components/pollingNav.vue'
 import { useStore } from 'vuex';
 import { computed, onMounted } from 'vue';
-
-const store =useStore()
+const store = useStore()
 const user = computed(() => {
   return store.state.user
 })
 
 onMounted(() => {
-  store.commit('setUser')
+  store.commit('setUserDetails')
 })
 
 </script>

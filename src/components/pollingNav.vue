@@ -9,7 +9,7 @@
         <div>
             <button class="border-black text-xl bg-gray-200 lg:text-2xl sm:text-base  md:text-xl text-black mv:text-xs text-md rounded-md pl-4 p-1 font-medium pr-4"
                 @click="logoutUser">
-                <router-link to="/">Logout</router-link>
+                Logout
             </button>
         </div>
     </div>
@@ -28,7 +28,7 @@ const router = useRouter()
 const logoutUser = () => {
     localStorage.removeItem('user')
     localStorage.removeItem('token')
-    store.commit('setUser')
+    store.commit('setUserDetails')
     router.push('/')
 }
 </script>

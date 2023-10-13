@@ -38,7 +38,7 @@
 
 <script setup>
 import { useRouter } from 'vue-router';
-import { addPollingApi } from "../composables/pollingdetails.js";
+import { addPollingApi } from "../composables/pollingDetails.js";
 const {
     addNewPoll,
     newPoll,

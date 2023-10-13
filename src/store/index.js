@@ -31,7 +31,7 @@ export default createStore({
     clearLoginError(state) {
       state.loginError = null;
     },
-    setUser(state) {
+    setUserDetails(state) {
       state.user = JSON.parse(localStorage.getItem('user'))
       state.token = JSON.parse(localStorage.getItem('token'))
     },
@@ -67,7 +67,8 @@ export default createStore({
 
     async getPolls({ commit }) {
       try {
-        const response = await api.get("poll/list/1?limit=4",);
+        let pageNo=1;
+        const response = await api.get(`poll/list/${pageNo}?limit=4`,);
         console.log(response)
         commit('setPoll', response.data.rows);
 
@@ -97,7 +98,7 @@ export default createStore({
         console.log(response)
         localStorage.setItem('user', JSON.stringify(response.data.user));
         localStorage.setItem('token', JSON.stringify(response.data.token));
-        commit('setUser')
+        commit('setUserDetails')
       } catch (error) {
         console.log(error);
         commit('setLoginError', error.response.data.message);

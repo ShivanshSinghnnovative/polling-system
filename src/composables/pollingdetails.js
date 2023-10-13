@@ -2,7 +2,7 @@ import { reactive, ref, onMounted, computed } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 
-export const showPollApi = () => {
+export const getAllPolls = () => {
   const store = useStore();
   onMounted(async () => {
     await store.dispatch("getPolls");
@@ -15,7 +15,7 @@ export const showPollApi = () => {
     polls: pollsData,
   };
 };
-export const addPollingApi = () => {
+export const createNewPoll = () => {
   const store = useStore();
   const newPoll = reactive({
     title: "",
@@ -65,13 +65,13 @@ export const addPollingApi = () => {
   const deleteOption = (index) => {
     newPoll.options.splice(index, 1);
     i--
-};
+  };
 
-const updateOption = (key ,  index) => {
-        option.value=key ;
-        newPoll.options.splice(index, 1);
-        i--
-};
+  const updateOption = (key, index) => {
+    option.value = key;
+    newPoll.options.splice(index, 1);
+    i--
+  };
 
   return {
     addNewPoll,

@@ -74,7 +74,7 @@
 </template>
 
 <script setup>
-import { signupApi } from "../composables/loginsignup.js";
+import { signupApi } from "../composables/loginSignup.js";
 import sucessSignup from "../components/sucessSignupModal.vue";
 
 const {

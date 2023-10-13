@@ -19,13 +19,13 @@
 </template>
 
 <script setup>
-import { showPollApi } from '../composables/pollingdetails.js'
 import { useRouter } from 'vue-router';
+import { getAllPolls } from '@/composables/pollingDetails';
 const router = useRouter();
 const createPoll = (() => {
   router.push('/addpoll')
 })
 const {
   polls
-} = showPollApi();
+} = getAllPolls();
 </script>
