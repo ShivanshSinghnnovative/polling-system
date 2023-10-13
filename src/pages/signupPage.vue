@@ -5,28 +5,28 @@
             <h1 class="md:text-3xl font-bold md:pt-1 md:p-2 mv:p-1 mv:text-lg">Sign Up</h1>
             <div class="flex flex-col">
                 <input type="text"
-                    class="border-black border-2 xll:text-3xl md:p-2 mv:p-1 md:m-4 mv:m-2 mb-2 md:text-xl md:mb-1 mv:text-lg rounded-md w-5/5"
+                    class="border-black border-2 xll:text-3xl md:p-2 mv:p-1 md:m-4 mv:m-2 mb-2 md:text-xl md:mb-1 mv:text-base rounded-md w-5/5"
                     placeholder="Enter First Name" v-model="signUser.firstName" required />
                 <div class="text-red-500 text-left mv:text-sm md:text-lg pl-2"
                     v-if="signUser.firstName.trim().length < 5 && signUpErr.length > 0">
                     Firstname length should be greater than 5
                 </div>
                 <input type="text"
-                    class="border-black border-2 xll:text-3xl md:mb-1 md:p-2 mv:p-1 md:m-4 mv:m-2 mb-2 md:text-xl mv:text-lg rounded-md w-5/5"
+                    class="border-black border-2 xll:text-3xl md:mb-1 md:p-2 mv:p-1 md:m-4 mv:m-2 mb-2 md:text-xl mv:text-base rounded-md w-5/5"
                     placeholder="Enter Last Name" v-model="signUser.lastName" required />
                 <div class="text-red-500 text-left mv:text-sm md:text-lg pl-2"
                     v-if="signUser.lastName.trim().length < 5 && signUpErr.length > 0">
                     Lastname length should be greater than 5
                 </div>
                 <input type="email"
-                    class="border-black border-2 xll:text-3xl md:mb-1md:p-2 mv:p-1 md:m-4 mv:m-2 md:mb-1 mb-2 md:text-xl mv:text-lg rounded-md w-5/5"
+                    class="border-black border-2 xll:text-3xl md:mb-1md:p-2 mv:p-1 md:m-4 mv:m-2 md:mb-1 mb-2 md:text-xl mv:text-base rounded-md w-5/5"
                     placeholder="Enter Your Email" v-model="signUser.email" required />
                 <div class="text-red-500 text-left mv:text-sm md:text-lg pl-2"
                     v-if="signUser.email.trim().length < 5 && emailCheck.length != 0">
                     {{ emailCheck }}
                 </div>
                 <div
-                    class="border-black border-2 md:p-2 mv:p-1 md:mb-1 md:m-4 mv:m-2 mb-2 md:text-xl xll:text-3xl mv:text-lg flex justify-between rounded-md w-5/5">
+                    class="border-black border-2 md:p-2 mv:p-1 md:mb-1 md:m-4 mv:m-2 mb-2 md:text-xl xll:text-3xl mv:text-base flex justify-between rounded-md w-5/5">
                     <input :type="hidePassword ? 'text' : 'password'" placeholder="Enter Password"
                         class="outline-none w-4/5" v-model="signUser.password" required />
                     <font-awesome-icon :icon="hidePassword ? 'fa-solid fa-eye' : 'fa-solid fa-eye-slash'"
@@ -40,7 +40,7 @@
                     v-if="signUser.password.trim().length >= 8 && passwordCheck.length != 0">
                     {{ passwordCheck }}
                 </div>
-                <select class="border-black border-2 md:mb-1 md:p-2 mv:p-1 md:m-4 mv:m-2 rounded-md w-5/5"
+                <select class="border-black border-2 md:mb-1 md:p-2 mv:p-1 mv:text-base md:m-4 mv:m-2 rounded-md w-5/5"
                     v-model="signUser.roleId" required>
                     <option>Select A Role</option>
                     <option v-for="role in roles" :key="role.id" :value="role.id">
@@ -51,7 +51,7 @@
                     {{ userExist }}
                 </div>
                 <button
-                    class="md:m-4 mv:m-2 xll:text-3xl rounded-md md:mb-1 md:p-2 mv:p-1 bg-green-700 text-white md:text-3xl mv:text-lg cursor-pointer border-none">
+                    class="md:m-4 mv:m-2 xll:text-3xl rounded-md md:mb-1 md:p-2 mv:p-1 bg-green-700 text-white md:text-3xl mv:text-base cursor-pointer border-none">
                     <span v-if="isLoading"> <font-awesome-icon icon="fa-solid fa-spinner" /></span>
                     <span v-else>Create account</span>
                 </button>
@@ -64,8 +64,8 @@
                     </div>
                 </div>
                 <div>
-                    <p class="mv:text-sm md:text-xl md:mt-2">Already a Member ?</p>
-                    <router-link to="/"><a class="text-green-700 cursor-pointer mt-4 mv:text-sm md:text-xl">Log
+                    <p class="mv:text-xs md:text-xl md:mt-2">Already a Member ?</p>
+                    <router-link to="/"><a class="text-green-700 cursor-pointer mt-4 mv:text-xs md:text-xl">Log
                             In</a></router-link>
                 </div>
             </div>

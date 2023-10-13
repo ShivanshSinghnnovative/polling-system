@@ -4,10 +4,10 @@
             <h2 class="md:text-3xl font-bold pt-4 mv:pt-2 mv:text-lg">Login Now</h2>
             <div class="md:p-4 flex flex-col justify-center text-center">
                 <input type="email" placeholder="Enter Your Email" v-model="loginUserDetails.email"
-                    class="border-black border-2 md:p-2 xll:text-3xl mv:p-1 md:m-4 mv:m-2 md:mb-2 mv:mb-0 md:text-2xl mv:text-lg rounded-md w-5/5"
+                    class="border-black border-2 md:p-2 xll:text-3xl mv:p-1 md:m-4 mv:m-2 md:mb-2 mv:mb-0 md:text-2xl mv:text-base rounded-md w-5/5"
                     required /><br />
                 <div
-                    class="border-black border-2 md:p-2 md:text-2xl mv:text-lg mv:p-1 md:m-4 mv:m-2 mv:mt-0 md:mt-0 xll:text-3xl text-xl flex justify-between rounded-md w-5/5">
+                    class="border-black border-2 md:p-2 md:text-2xl mv:text-base mv:p-1 md:m-4 mv:m-2 mv:mt-0 md:mt-0 xll:text-3xl text-xl flex justify-between rounded-md w-5/5">
                     <input :type="hidePassword ? 'text' : 'password'" placeholder="Enter Your Password"
                         class="outline-none w-4/5" v-model="loginUserDetails.password" required />
                     <font-awesome-icon :icon="hidePassword ? 'fa-solid fa-eye' : 'fa-solid fa-eye-slash'"
@@ -15,14 +15,14 @@
                 </div>
                 <span class="text-red-500 text-left text-lg pl-2">{{ loginErr }} </span>
                 <button
-                    class="md:m-4 mv:m-2 mv:mt-3 rounded-md md:p-2 mv:p-1 bg-green-700 text-white md:text-3xl mv:text-lg cursor-pointer border-none">
+                    class="md:m-4 mv:m-2 mv:mt-3 rounded-md md:p-2 mv:p-1 bg-green-700 text-white md:text-3xl mv:text-base cursor-pointer border-none">
                     <span v-if="isLoading">
                         <font-awesome-icon icon="fa-solid fa-spinner" /></span>
                     <span v-else>Login</span>
                 </button>
                 <div>
-                    <p class="md:text-xl mv:text-sm">Don't have an account ?</p>
-                    <router-link to="/signup"><a class="text-green-700 md:text-xl mv:text-sm cursor-pointer mt-4">create an
+                    <p class="md:text-xl mv:text-xs ">Don't have an account ?</p>
+                    <router-link to="/signup"><a class="text-green-700 md:text-xl mv:text-xs cursor-pointer mt-4">create an
                             account</a></router-link>
                 </div>
             </div>
