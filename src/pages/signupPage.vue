@@ -40,7 +40,6 @@
                     v-if="signUser.password.trim().length >= 8 && passwordCheck.length != 0">
                     {{ passwordCheck }}
                 </div>
-
                 <select class="border-black border-2 md:mb-1 md:p-2 mv:p-1 md:m-4 mv:m-2 rounded-md w-5/5"
                     v-model="signUser.roleId" required>
                     <option>Select A Role</option>

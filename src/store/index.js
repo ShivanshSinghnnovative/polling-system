@@ -1,13 +1,25 @@
 import { createStore } from "vuex";
 import axios from "axios";
+const api = axios.create({
+  baseURL: process.env.VUE_APP_BASE_URL,
+});
+api.interceptors.request.use(config => {
+  const token = JSON.parse(localStorage.getItem('token'));
+  if (token) {
+    config.headers.token = `${token}`;
+  }
+  return config;
+}, error => {
+  return Promise.reject(error);
+});
 export default createStore({
   state: {
-    user: null, 
-    token: null, 
+    user: null,
+    token: null,
     roles: [],
     signErr: null,
     loginError: null,
-    polls:[],
+    polls: [],
   },
   mutations: {
     setRoles(state, roles) {
@@ -23,26 +35,24 @@ export default createStore({
       state.user = JSON.parse(localStorage.getItem('user'))
       state.token = JSON.parse(localStorage.getItem('token'))
     },
-    setPoll(state, polls){
-      state.polls=polls;
+    setPoll(state, polls) {
+      state.polls = polls;
     }
   },
   actions: {
     async fetchRoles({ commit }) {
       try {
-        const response = await axios.get(
-          `${process.env.VUE_APP_BASE_URL}role/list`
-        );
+        const response = await api.get("role/list");
         commit("setRoles", response.data);
       } catch (error) {
-        console.error( error);
+        console.error(error);
       }
     },
-    
+
     async signup({ state }, { email, firstName, lastName, roleId, password }) {
       try {
         state.signErr = null
-        await axios.post(`${process.env.VUE_APP_BASE_URL}user/register`, {
+        await api.post("user/register", {
           email: email,
           firstName: firstName,
           lastName: lastName,
@@ -54,44 +64,33 @@ export default createStore({
         console.log(error)
       }
     },
+
     async getPolls({ commit }) {
       try {
-        const token = JSON.parse(localStorage.getItem('token'));
-        const response = await axios.get(`${process.env.VUE_APP_BASE_URL}poll/list/1?limit=4`,
-        {
-          headers: {
-            token: token
-          }
-        });
-       
-          commit('setPoll',response.data.rows)
-      
-      }catch (error) {
-        console.log(error)
+        const response = await api.get("poll/list/1?limit=4",);
+        console.log(response)
+        commit('setPoll', response.data.rows);
+
+      } catch (error) {
+        console.error("Error in getPolls action:", error);
       }
     },
-    async addPoll({state}, { title, options }) {
+    async addPoll({ title, options }) {
       try {
-        const token = JSON.parse(localStorage.getItem('token'));
-        await axios.post(`${process.env.VUE_APP_BASE_URL}poll/add`,
-          {
-            title: title,
-            options: options
-          },
-          {
-            headers: {
-              token: token
-            }
-          })
+        await api.post("poll/add", {
+          title: title,
+          options: options
+        });
+
       } catch (error) {
-        console.log(error , state)
+        console.error("Error in addPoll action:", error);
       }
     },
 
     async login({ commit }, { email, password }) {
       try {
         commit('clearLoginError');
-       const response =  await axios.post(`${process.env.VUE_APP_BASE_URL}user/login`, {
+        const response = await api.post("user/login", {
           email: email,
           password: password,
         });

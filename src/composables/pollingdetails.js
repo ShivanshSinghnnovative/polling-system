@@ -7,7 +7,6 @@ export const showPollApi = () => {
   onMounted(async () => {
     await store.dispatch("getPolls");
   });
-
   const pollsData = computed(() => {
     return store.getters.getPoll;
   });
@@ -34,7 +33,7 @@ export const addPolling = () => {
         optionTitle: newPoll.options[j],
       };
     }
-    if (newPoll.title.length > 9) {
+    if (newPoll.title.trim().length > 9) {
       if (newPoll.options.length > 2) {
         try {
           await store.dispatch("addPoll", {

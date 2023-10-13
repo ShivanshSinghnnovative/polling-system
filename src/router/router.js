@@ -1,11 +1,23 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
+
+
+function userIsLoggedIn() {
+  return localStorage.getItem('token') !== null;
+}
+const commonBeforeEnter = (to, from, next) => {
+  if (userIsLoggedIn()) {
+    next();
+  } else {
+    next({ name: 'login' });
+  }
+};
 const routes = [
   {
     path: '/',
     name: 'login',
     component: () => import('../pages/loginPage.vue'),
     beforeEnter: (to, from, next) => {
-    
+
       if (userIsLoggedIn()) {
         next({ name: 'polling' });
       } else {
@@ -30,25 +42,13 @@ const routes = [
     path: '/polling',
     name: 'polling',
     component: () => import('../pages/pollingPage.vue'),
-    beforeEnter: (to, from, next) => {
-      if (userIsLoggedIn()) {
-        next();
-      } else {
-        next({ name: 'login' });
-      }
-    },
+    beforeEnter: commonBeforeEnter,
   },
   {
-    path:'/addpoll',
-    name:'createpoll',
-    component:()=>import("../pages/createPoll.vue"),
-    beforeEnter:(to,from,next)=>{
-      if(userIsLoggedIn()){
-        next();
-      } else {
-        next({ name: 'login' });
-      }
-    }
+    path: '/addpoll',
+    name: 'createpoll',
+    component: () => import("../pages/createPoll.vue"),
+    beforeEnter: commonBeforeEnter,
   }
 ];
 const router = createRouter({
@@ -67,8 +67,5 @@ router.beforeEach((to, from, next) => {
 });
 
 
-function userIsLoggedIn() {
-  return localStorage.getItem('token') !== null;
-}
 
 export default router
