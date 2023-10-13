@@ -11,7 +11,7 @@
                     <input :type="hidePassword ? 'text' : 'password'" placeholder="Enter Your Password"
                         class="outline-none w-4/5" v-model="loginUserDetails.password" required />
                     <font-awesome-icon :icon="hidePassword ? 'fa-solid fa-eye' : 'fa-solid fa-eye-slash'"
-                        class="cursor-pointer" @click="togglePassword" />
+                        class="cursor-pointer m-1 mt-1" @click="togglePassword" />
                 </div>
                 <span class="text-red-500 text-left text-lg pl-2">{{ loginErr }} </span>
                 <button

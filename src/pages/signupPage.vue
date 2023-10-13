@@ -30,7 +30,7 @@
                     <input :type="hidePassword ? 'text' : 'password'" placeholder="Enter Password"
                         class="outline-none w-4/5" v-model="signUser.password" required />
                     <font-awesome-icon :icon="hidePassword ? 'fa-solid fa-eye' : 'fa-solid fa-eye-slash'"
-                        class="cursor-pointer m-4;" @click="togglePassword" />
+                        class="cursor-pointer m-1 mt-1;" @click="togglePassword" />
                 </div>
                 <div class="text-red-500 text-left mv:text-sm md:text-lg pl-2"
                     v-if="signUser.password.trim().length < 8 && signUpErr.length > 0">
