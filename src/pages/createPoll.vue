@@ -13,12 +13,12 @@
             </div>
             <div>
                 <div class="flex flex-wrap rounded m-2 w-5/5">
-                    <span v-for="option in newPoll.options " :key="option.trim()">
+                    <span v-for="(option , index) in newPoll.options " :key="index">
                         <div class="border-black border-2 m-2 rounded p-1 bg-gray-200 ">
-                            <span class="text-xl p-2">{{ option.trim() }}</span>
-                            <span class="p-2 cursor-pointer" @click="updateOption(option)">
+                            <span class="text-xl p-2">{{ option }}</span>
+                            <span class="p-2 cursor-pointer" @click="updateOption(option ,index)">
                                 <font-awesome-icon icon="fa-solid fa-pen" /></span>
-                            <span class="p-2 cursor-pointer" @click="deleteOption(option)">
+                            <span class="p-2 cursor-pointer" @click="deleteOption(index)">
                                 <font-awesome-icon icon="fa-solid fa-trash" /></span>
                         </div>
 
@@ -38,7 +38,7 @@
 
 <script setup>
 import { useRouter } from 'vue-router';
-import { addPolling } from "../composables/pollingdetails.js";
+import { addPollingApi } from "../composables/pollingdetails.js";
 const {
     addNewPoll,
     newPoll,
@@ -47,7 +47,7 @@ const {
     option,
     updateOption,
     deleteOption
-} = addPolling();
+} = addPollingApi();
 const router = useRouter();
 const goBack = (() => {
     router.push('/polling')

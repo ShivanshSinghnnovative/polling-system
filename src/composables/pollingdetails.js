@@ -15,7 +15,7 @@ export const showPollApi = () => {
     polls: pollsData,
   };
 };
-export const addPolling = () => {
+export const addPollingApi = () => {
   const store = useStore();
   const newPoll = reactive({
     title: "",
@@ -62,20 +62,16 @@ export const addPolling = () => {
     }
     addError.value = "";
   };
+  const deleteOption = (index) => {
+    newPoll.options.splice(index, 1);
+    i--
+};
 
-  const deleteOption = (key) => {
-    newPoll.options = newPoll.options.filter((item) => {
-      return key !== item;
-    });
-    i--;
-  };
-  const updateOption = (key) => {
-    option.value = key;
-    newPoll.options = newPoll.options.filter((item) => {
-      return key !== item;
-    });
-    i--;
-  };
+const updateOption = (key ,  index) => {
+        option.value=key ;
+        newPoll.options.splice(index, 1);
+        i--
+};
 
   return {
     addNewPoll,
