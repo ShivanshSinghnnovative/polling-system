@@ -4,15 +4,32 @@ import { useRouter } from "vue-router";
 
 export const getAllPollsApi = () => {
   const store = useStore();
+  const pageNo = ref(1);  
+  const limit = ref(4); 
   onMounted(async () => {
-    await store.dispatch("getPolls");
+    await store.dispatch("getPolls", {
+      pageNo: pageNo.value,
+      limit: limit.value,
+    });
   });
   const pollsData = computed(() => {
     return store.getters.getAllPolls;
   });
   // console.log(store)
+  const getMorePolls = async () => {
+    try {
+      pageNo.value++;  
+      await store.dispatch("getPolls", {
+        pageNo: pageNo.value,
+        limit: limit.value,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return {
     polls: pollsData,
+    getMorePolls
   };
 };
 export const createNewPollApi = () => {

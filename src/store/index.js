@@ -52,13 +52,10 @@ export default createStore({
         console.log(error)
       }
     },
-    async getPolls({ commit }) {
+    async getPolls({ commit }, { pageNo, limit }) {
       try {
-        let pageNo = 1;
-        const response = await api.get(`poll/list/${pageNo}?limit=4`,);
-        console.log(response)
+        const response = await api.get(`poll/list/${pageNo}?limit=${limit}`,);
         commit('setPoll', response.data.rows);
-
       } catch (error) {
         console.error("Error in getPolls action:", error);
       }
