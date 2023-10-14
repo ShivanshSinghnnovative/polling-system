@@ -1,7 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 
 
-function userIsLoggedIn() {
+const userIsLoggedIn = () => {
   return localStorage.getItem('token') !== null;
 }
 const commonBeforeEnter = (to, from, next) => {

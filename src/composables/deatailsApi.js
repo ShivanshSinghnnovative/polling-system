@@ -6,7 +6,7 @@ api.interceptors.request.use(
     (config) => {
         const token = JSON.parse(localStorage.getItem("token"));
         if (token) {
-            config.headers.token = `${token}`;
+            config.headers.token = token;
         }
         return config;
     },

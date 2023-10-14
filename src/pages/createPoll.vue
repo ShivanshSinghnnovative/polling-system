@@ -52,6 +52,6 @@ const {
 } = createNewPollApi();
 const router = useRouter();
 const goBack = (() => {
-    router.push('/polling')
+    router.go(-1);
 })
 </script>
