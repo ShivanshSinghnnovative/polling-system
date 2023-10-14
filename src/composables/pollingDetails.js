@@ -3,33 +3,40 @@ import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 
 export const getAllPollsApi = () => {
+  const isLoading = ref(false);
   const store = useStore();
   const pageNo = ref(1);
   const limit = ref(4);
   onMounted(async () => {
+    isLoading.value = true;
     await store.dispatch("getPolls", {
       pageNo: pageNo.value,
       limit: limit.value,
     });
+    isLoading.value = false;
   });
   const pollsData = computed(() => {
     return store.getters.getAllPolls;
   });
   // console.log(store)
   const getMorePolls = async () => {
+    isLoading.value = true;
     try {
       pageNo.value++;
       await store.dispatch("getPolls", {
         pageNo: pageNo.value,
         limit: limit.value,
       });
+      isLoading.value = false;
     } catch (error) {
       console.log(error);
+      isLoading.value = false;
     }
   };
   return {
     polls: pollsData,
-    getMorePolls
+    getMorePolls,
+    isLoading
   };
 };
 export const createNewPollApi = () => {
@@ -100,3 +107,10 @@ export const createNewPollApi = () => {
     updateOption,
   };
 };
+// export const updateTitleApi = () => {
+//   const hello = (id) => {
+//     console.log(id);
+//   };
+
+//   return { hello };
+// };

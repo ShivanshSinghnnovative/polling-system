@@ -41,7 +41,13 @@ const routes = [
     name: 'createpoll',
     component: () => import("../pages/createPoll.vue"),
     beforeEnter: commonBeforeEnter,
-  }
+  },
+  {
+    path:'/updatetitle/:id',
+    name:'updatetitles',
+    component: () => import("../pages/updateTitle.vue"),
+    beforeEnter: commonBeforeEnter ,
+  },
 ];
 const router = createRouter({
   history: createWebHashHistory(process.env.BASE_URL),
