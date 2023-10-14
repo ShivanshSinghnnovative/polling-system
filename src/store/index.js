@@ -1,12 +1,13 @@
 import { createStore } from "vuex";
-import axios from "axios";
+import api from "../composables/deatailsApi.js"
 export default createStore({
   state: {
-    user: null, 
-    token: null, 
+    user: null,
+    token: null,
     roles: [],
     signErr: null,
     loginError: null,
+    polls: [],
   },
   mutations: {
     setRoles(state, roles) {
@@ -18,23 +19,28 @@ export default createStore({
     clearLoginError(state) {
       state.loginError = null;
     },
-
+    setUserDetails(state) {
+      state.user = JSON.parse(localStorage.getItem('user'))
+      state.token = JSON.parse(localStorage.getItem('token'))
+    },
+    setPoll(state, polls) {
+      state.polls = polls;
+    }
   },
   actions: {
     async fetchRoles({ commit }) {
       try {
-        const response = await axios.get(
-          `${process.env.VUE_APP_BASE_URL}role/list`
-        );
+        const response = await api.get("role/list");
         commit("setRoles", response.data);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error(error);
       }
     },
+
     async signup({ state }, { email, firstName, lastName, roleId, password }) {
       try {
         state.signErr = null
-        await axios.post(`${process.env.VUE_APP_BASE_URL}user/register`, {
+        await api.post("user/register", {
           email: email,
           firstName: firstName,
           lastName: lastName,
@@ -46,19 +52,37 @@ export default createStore({
         console.log(error)
       }
     },
+    async getPolls({ commit }, { pageNo, limit }) {
+      try {
+        const response = await api.get(`poll/list/${pageNo}?limit=${limit}`,);
+        commit('setPoll', response.data.rows);
+      } catch (error) {
+        console.error("Error in getPolls action:", error);
+      }
+    },
+    async addPoll({ state }, { title, options }) {
+      try {
+        await api.post("poll/add", {
+          title: title,
+          options: options
+        });
+      } catch (error) {
+        console.error("Error in addPoll action:", error);
+        console.log(state)
+      }
+    },
 
     async login({ commit }, { email, password }) {
       try {
         commit('clearLoginError');
-       const response =  await axios.post(`${process.env.VUE_APP_BASE_URL}user/login`, {
+        const response = await api.post("user/login", {
           email: email,
           password: password,
         });
         console.log(response)
         localStorage.setItem('user', JSON.stringify(response.data.user));
         localStorage.setItem('token', JSON.stringify(response.data.token));
-
-       
+        commit('setUserDetails')
       } catch (error) {
         console.log(error);
         commit('setLoginError', error.response.data.message);
@@ -67,6 +91,7 @@ export default createStore({
   },
   getters: {
     getRoles: (state) => state.roles,
+    getAllPolls: (state) => state.polls,
   },
   modules: {},
 });
