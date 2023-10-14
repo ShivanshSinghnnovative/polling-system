@@ -43,8 +43,8 @@ const {
 import { useStore } from "vuex";
 import { onMounted } from "vue";
 const store = useStore();
-const clearLoginError = () => {
-    store.commit("clearLoginError");
+const clearLoginError = async () => {
+    await store.commit("clearLoginError");
 };
 onMounted(() => {
     clearLoginError();

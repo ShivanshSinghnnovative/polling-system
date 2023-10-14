@@ -7,7 +7,7 @@
   </div>
   <div class="w-4/5  p-8 m-3 rounded bg-gray-100 ml-auto mr-auto">
     <div v-for="poll in polls" :key="poll.id">
-      <h1 class="text-2xl font-medium breal-all break-words  md:text-xl lg:text-2xl mv:text-sm ">Title: {{ poll.title }}
+      <h1 class="text-2xl font-medium breal-all break-words  md:text-xl lg:text-2xl lg:mt-3 mv:text-sm ">Title: {{ poll.title }}
       </h1>
       <h1 class="text-xl pt-2 pb-1 mv:text-xs md:text-lg ">Options: </h1>
       <div v-for="opt in poll.optionList" :key="opt.id" class="bg-white">
@@ -15,7 +15,7 @@
           {{ opt.optionTitle }}</h3>
       </div>
       <hr>
-      <br />
+      
     </div>
   </div>
 </template>
