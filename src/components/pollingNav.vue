@@ -7,7 +7,8 @@
             POLLING
         </div>
         <div>
-            <button class="border-black text-xl bg-gray-200 lg:text-2xl sm:text-base  md:text-xl text-black mv:text-xs text-md rounded-md pl-4 p-1 font-medium pr-4"
+            <button
+                class="border-black text-xl bg-gray-200 lg:text-2xl sm:text-base  md:text-xl text-black mv:text-xs text-md rounded-md pl-4 p-1 font-medium pr-4"
                 @click="logoutUser">
                 Logout
             </button>
@@ -25,10 +26,10 @@ defineProps({
 })
 const store = useStore()
 const router = useRouter()
-const logoutUser = () => {
+const logoutUser = async () => {
     localStorage.removeItem('user')
     localStorage.removeItem('token')
-    store.commit('setUserDetails')
+    await store.commit('setUserDetails')
     router.push('/')
 }
 </script>

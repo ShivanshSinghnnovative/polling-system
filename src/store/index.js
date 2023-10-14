@@ -67,7 +67,7 @@ export default createStore({
 
     async getPolls({ commit }) {
       try {
-        let pageNo=1;
+        let pageNo = 1;
         const response = await api.get(`poll/list/${pageNo}?limit=4`,);
         console.log(response)
         commit('setPoll', response.data.rows);
@@ -76,15 +76,16 @@ export default createStore({
         console.error("Error in getPolls action:", error);
       }
     },
-    async addPoll({ title, options }) {
+    async addPoll({ state }, { title, options }) {
+      console.log(title, options, 'rgkkmgikmgkermkim')
       try {
         await api.post("poll/add", {
           title: title,
           options: options
         });
-
       } catch (error) {
         console.error("Error in addPoll action:", error);
+        console.log(state)
       }
     },
 

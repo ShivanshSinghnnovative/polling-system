@@ -2,7 +2,7 @@ import { reactive, ref, onMounted, computed } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 
-export const getAllPolls = () => {
+export const getAllPollsApi = () => {
   const store = useStore();
   onMounted(async () => {
     await store.dispatch("getPolls");
@@ -15,7 +15,7 @@ export const getAllPolls = () => {
     polls: pollsData,
   };
 };
-export const createNewPoll = () => {
+export const createNewPollApi = () => {
   const store = useStore();
   const newPoll = reactive({
     title: "",
@@ -35,6 +35,7 @@ export const createNewPoll = () => {
     }
     if (newPoll.title.trim().length > 9) {
       if (newPoll.options.length > 2) {
+        console.log(newPoll.title, optionTitle, 'jbjughhghgygyg')
         try {
           await store.dispatch("addPoll", {
             title: newPoll.title,

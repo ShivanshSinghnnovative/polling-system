@@ -13,10 +13,10 @@
             </div>
             <div>
                 <div class="flex flex-wrap rounded m-2 w-5/5">
-                    <span v-for="(option , index) in newPoll.options " :key="index">
+                    <span v-for="(option, index) in newPoll.options " :key="index">
                         <div class="border-black border-2 m-2 rounded p-1 md:text-2xl  mv:text-lg bg-gray-200 ">
                             <span class="text-xl p-2">{{ option }}</span>
-                            <span class="p-2 cursor-pointer" @click="updateOption(option ,index)">
+                            <span class="p-2 cursor-pointer" @click="updateOption(option, index)">
                                 <font-awesome-icon icon="fa-solid fa-pen" /></span>
                             <span class="p-2 cursor-pointer" @click="deleteOption(index)">
                                 <font-awesome-icon icon="fa-solid fa-trash" /></span>
@@ -27,9 +27,11 @@
             </div>
             <h4 class=" text-sm text-red-500">{{ addError }}</h4>
             <div>
-                <button class="bg-green-600 rounded shadow px-3 text-white m-2 py-3 md:mt-6 font-bold md:text-lg  mv:text-xs mv:p-2 mv:mt-1 "
+                <button
+                    class="bg-green-600 rounded shadow px-3 text-white m-2 py-3 md:mt-6 font-bold md:text-lg  mv:text-xs mv:p-2 mv:mt-1 "
                     @click="addNewPoll" type="submit">Submit</button>
-                <button class="bg-green-600 rounded shadow px-3 text-white m-2 py-3 md:mt-6 font-bold md:text-lg mv:text-xs mv:p-2 mv:mt-1 "
+                <button
+                    class="bg-green-600 rounded shadow px-3 text-white m-2 py-3 md:mt-6 font-bold md:text-lg mv:text-xs mv:p-2 mv:mt-1 "
                     @click="goBack">Back</button>
             </div>
         </form>
@@ -38,7 +40,7 @@
 
 <script setup>
 import { useRouter } from 'vue-router';
-import { addPollingApi } from "../composables/pollingDetails.js";
+import { createNewPollApi } from "../composables/pollingDetails.js";
 const {
     addNewPoll,
     newPoll,
@@ -47,7 +49,7 @@ const {
     option,
     updateOption,
     deleteOption
-} = addPollingApi();
+} = createNewPollApi();
 const router = useRouter();
 const goBack = (() => {
     router.push('/polling')
