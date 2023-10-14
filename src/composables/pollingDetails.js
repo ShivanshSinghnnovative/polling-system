@@ -8,7 +8,7 @@ export const getAllPollsApi = () => {
     await store.dispatch("getPolls");
   });
   const pollsData = computed(() => {
-    return store.getters.getPoll;
+    return store.getters.getAllPolls;
   });
   // console.log(store)
   return {
@@ -35,7 +35,6 @@ export const createNewPollApi = () => {
     }
     if (newPoll.title.trim().length > 9) {
       if (newPoll.options.length > 2) {
-        console.log(newPoll.title, optionTitle, 'jbjughhghgygyg')
         try {
           await store.dispatch("addPoll", {
             title: newPoll.title,

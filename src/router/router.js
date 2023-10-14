@@ -11,32 +11,26 @@ const commonBeforeEnter = (to, from, next) => {
     next({ name: 'login' });
   }
 };
+const afterSucessfullloginsignup =  (to, from, next) => {
+
+  if (userIsLoggedIn()) {
+    next({ name: 'polling' });
+  } else {
+    next();
+  }
+};
 const routes = [
   {
     path: '/',
     name: 'login',
     component: () => import('../pages/loginPage.vue'),
-    beforeEnter: (to, from, next) => {
-
-      if (userIsLoggedIn()) {
-        next({ name: 'polling' });
-      } else {
-        next();
-      }
-    },
+    beforeEnter: afterSucessfullloginsignup ,
   },
   {
     path: '/signup',
     name: 'signup',
     component: () => import('../pages/signupPage.vue'),
-    beforeEnter: (to, from, next) => {
-      if (userIsLoggedIn()) {
-        next({ name: 'polling' });
-      } else {
-        next();
-      }
-    },
-
+    beforeEnter: afterSucessfullloginsignup ,
   },
   {
     path: '/polling',

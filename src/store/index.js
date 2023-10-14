@@ -1,17 +1,5 @@
 import { createStore } from "vuex";
-import axios from "axios";
-const api = axios.create({
-  baseURL: process.env.VUE_APP_BASE_URL,
-});
-api.interceptors.request.use(config => {
-  const token = JSON.parse(localStorage.getItem('token'));
-  if (token) {
-    config.headers.token = `${token}`;
-  }
-  return config;
-}, error => {
-  return Promise.reject(error);
-});
+import api from "../composables/deatailsApi.js"
 export default createStore({
   state: {
     user: null,
@@ -64,7 +52,6 @@ export default createStore({
         console.log(error)
       }
     },
-
     async getPolls({ commit }) {
       try {
         let pageNo = 1;
@@ -77,7 +64,6 @@ export default createStore({
       }
     },
     async addPoll({ state }, { title, options }) {
-      console.log(title, options, 'rgkkmgikmgkermkim')
       try {
         await api.post("poll/add", {
           title: title,
@@ -108,7 +94,7 @@ export default createStore({
   },
   getters: {
     getRoles: (state) => state.roles,
-    getPoll: (state) => state.polls,
+    getAllPolls: (state) => state.polls,
   },
   modules: {},
 });
