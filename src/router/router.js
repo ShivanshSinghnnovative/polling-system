@@ -1,6 +1,4 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-
-
 const userIsLoggedIn = () => {
   return localStorage.getItem('token') !== null;
 }
