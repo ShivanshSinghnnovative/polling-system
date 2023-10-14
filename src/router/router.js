@@ -11,7 +11,7 @@ const commonBeforeEnter = (to, from, next) => {
     next({ name: 'login' });
   }
 };
-const afterSucessfullloginsignup =  (to, from, next) => {
+const afterSucessfullloginsignup = (to, from, next) => {
 
   if (userIsLoggedIn()) {
     next({ name: 'polling' });
@@ -24,13 +24,13 @@ const routes = [
     path: '/',
     name: 'login',
     component: () => import('../pages/loginPage.vue'),
-    beforeEnter: afterSucessfullloginsignup ,
+    beforeEnter: afterSucessfullloginsignup,
   },
   {
     path: '/signup',
     name: 'signup',
     component: () => import('../pages/signupPage.vue'),
-    beforeEnter: afterSucessfullloginsignup ,
+    beforeEnter: afterSucessfullloginsignup,
   },
   {
     path: '/polling',

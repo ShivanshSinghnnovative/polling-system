@@ -1,10 +1,7 @@
-
 import axios from "axios";
-
 const api = axios.create({
     baseURL: process.env.VUE_APP_BASE_URL,
 });
-
 api.interceptors.request.use(
     (config) => {
         const token = JSON.parse(localStorage.getItem("token"));
@@ -17,5 +14,4 @@ api.interceptors.request.use(
         return Promise.reject(error);
     }
 );
-
 export default api;

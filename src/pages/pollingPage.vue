@@ -17,18 +17,16 @@
       </div>
       <hr>
     </div>
-    <div class="w-full ml-4/5  text-right "  >
-      <button @click="getMorePolls" 
+    <div class="w-full ml-4/5  text-right ">
+      <button @click="getMorePolls"
         class=" bg-green-900 rounded-md  text-white mv:text-xs sm:text-base text-md mr-5 mt-3 mb-3 font-serif p-2 pr-3 pl-3">
         Show More</button>
     </div>
   </div>
-  
 </template>
 
 <script setup>
 import { useRouter } from 'vue-router';
-import { ref } from 'vue';
 import { getAllPollsApi } from '@/composables/pollingDetails';
 const router = useRouter();
 const createPoll = (() => {
@@ -38,8 +36,5 @@ const {
   polls,
   getMorePolls
 } = getAllPollsApi();
-
-
-  getMorePolls();
 
 </script>

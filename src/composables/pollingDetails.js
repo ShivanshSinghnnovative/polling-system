@@ -4,8 +4,8 @@ import { useRouter } from "vue-router";
 
 export const getAllPollsApi = () => {
   const store = useStore();
-  const pageNo = ref(1);  
-  const limit = ref(4); 
+  const pageNo = ref(1);
+  const limit = ref(4);
   onMounted(async () => {
     await store.dispatch("getPolls", {
       pageNo: pageNo.value,
@@ -18,7 +18,7 @@ export const getAllPollsApi = () => {
   // console.log(store)
   const getMorePolls = async () => {
     try {
-      pageNo.value++;  
+      pageNo.value++;
       await store.dispatch("getPolls", {
         pageNo: pageNo.value,
         limit: limit.value,
