@@ -1,13 +1,13 @@
 import { reactive, ref, onMounted, computed } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
-
 export const getAllPollsApi = () => {
   const isLoading = ref(false);
   const store = useStore();
   const pageNo = ref(1);
   const limit = ref(4);
   onMounted(async () => {
+    store.commit('clearPolls')
     isLoading.value = true;
     await store.dispatch("getPolls", {
       pageNo: pageNo.value,
@@ -33,10 +33,31 @@ export const getAllPollsApi = () => {
       isLoading.value = false;
     }
   };
+  const openSinglePoll = async (id) => {
+    try {
+      await store.dispatch("updateTitle", {
+        id: id
+      })
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const deletePoll = async (id) => {
+    try {
+      await store.dispatch("removePoll", {
+        id: id,
+      })
+      window.location.reload();
+    } catch (error) {
+      console.log(error);
+    }
+  }
   return {
     polls: pollsData,
     getMorePolls,
-    isLoading
+    isLoading,
+    deletePoll,
+    openSinglePoll,
   };
 };
 export const createNewPollApi = () => {
@@ -77,7 +98,6 @@ export const createNewPollApi = () => {
       addError.value = "Please add a title with atleast 9 characters";
     }
   };
-
   const addOptions = () => {
     if (option.value) {
       newPoll.options[i] = option.value;
@@ -90,13 +110,11 @@ export const createNewPollApi = () => {
     newPoll.options.splice(index, 1);
     i--
   };
-
   const updateOption = (key, index) => {
     option.value = key;
     newPoll.options.splice(index, 1);
     i--
   };
-
   return {
     addNewPoll,
     newPoll,
@@ -107,10 +125,40 @@ export const createNewPollApi = () => {
     updateOption,
   };
 };
-// export const updateTitleApi = () => {
-//   const hello = (id) => {
-//     console.log(id);
-//   };
-
-//   return { hello };
-// };
+export const openSingleApi = () => {
+  const store = useStore();
+  const router = useRouter()
+  const getPollById = async (id) => {
+    try {
+      await store.dispatch("getPollById", {
+        id: id
+      })
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  const singlePoll = computed(() => {
+    return store.getters.getSinglePoll;
+  });
+  const goBack = (() => {
+    router.go(-1);
+  });
+  const updateTitle = async (updatedText, id) => {
+    if (updatedText.length > 9) {
+      try {
+        await store.dispatch('updatePollTitle', {
+          title: updatedText,
+          createdBy: 1,
+          pollId: id
+        })
+      }
+      catch (error) {
+        console.log(error)
+      }
+    }
+    router.push('/polling')
+  }
+  return {
+    getPollById, goBack, singlePoll, updateTitle
+  }
+}

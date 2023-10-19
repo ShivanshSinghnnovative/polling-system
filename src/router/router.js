@@ -43,11 +43,17 @@ const routes = [
     beforeEnter: commonBeforeEnter,
   },
   {
-    path:'/updatetitle/:id',
-    name:'updatetitles',
+    path: '/updatetitle/:id',
+    name: 'updatetitles',
     component: () => import("../pages/updateTitle.vue"),
-    beforeEnter: commonBeforeEnter ,
+    beforeEnter: commonBeforeEnter,
   },
+  {
+    path: '/singlepoll/:id',
+    name: 'singlepoll',
+    component: () => import("../pages/singlePoll.vue"),
+    beforeEnter: commonBeforeEnter,
+  }
 ];
 const router = createRouter({
   history: createWebHashHistory(process.env.BASE_URL),

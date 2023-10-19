@@ -21,7 +21,6 @@
                             <span class="p-2 cursor-pointer" @click="deleteOption(index)">
                                 <font-awesome-icon icon="fa-solid fa-trash" /></span>
                         </div>
-
                     </span>
                 </div>
             </div>

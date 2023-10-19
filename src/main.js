@@ -11,7 +11,8 @@ import {
     faSpinner,
     faPlus,
     faPen,
-    faTrash
+    faTrash,
+    faArrowRight
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(faEye);
@@ -20,4 +21,5 @@ library.add(faSpinner);
 library.add(faPlus);
 library.add(faPen);
 library.add(faTrash);
+library.add(faArrowRight);
 createApp(App).component("font-awesome-icon", FontAwesomeIcon).use(store).use(router).mount('#app')

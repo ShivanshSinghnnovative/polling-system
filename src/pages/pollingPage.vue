@@ -12,10 +12,13 @@
     <div v-for="poll in polls" :key="poll.id">
       <h1 class="text-2xl font-medium breal-all break-words  md:text-xl lg:text-2xl lg:mt-3 mv:text-sm ">Title: {{
         poll.title }}
-        <span class="p-2 cursor-pointer" @click="updateTitle(poll.id)">
+        <span class="p-2 cursor-pointer" @click="updateTitle(poll.id, poll.createdBy)">
           <font-awesome-icon icon="fa-solid fa-pen" /></span>
-        <span class="p-2 cursor-pointer">
+        <span class="p-2 cursor-pointer" @click="deletePoll(poll.id)">
           <font-awesome-icon icon="fa-solid fa-trash" /></span>
+        <span class="p-2 cursor-pointer" @click="openSinglePoll(poll.id)">
+          <font-awesome-icon icon="fa-solid fa-arrow-right" /></span>
+
       </h1>
       <h1 class="text-xl pt-2 pb-1 mv:text-xs md:text-lg ">Options: </h1>
       <div v-for="opt in poll.optionList" :key="opt.id" class="bg-white">
@@ -47,10 +50,14 @@ const createPoll = (() => {
 const updateTitle = ((id) => {
   router.push(`/updatetitle/${id}`)
 })
+const openSinglePoll = ((id) => {
+  router.push(`/singlepoll/${id}`)
+})
 const {
   polls,
   getMorePolls,
   isLoading,
+  deletePoll,
 } = getAllPollsApi();
 
 </script>

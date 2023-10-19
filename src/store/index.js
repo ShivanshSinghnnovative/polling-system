@@ -8,10 +8,14 @@ export default createStore({
     signErr: null,
     loginError: null,
     polls: [],
+    singlePoll: null
   },
   mutations: {
     setRoles(state, roles) {
       state.roles = roles;
+    },
+    setSinglePoll(state, poll) {
+      state.singlePoll = poll
     },
     setLoginError(state, error) {
       state.loginError = error;
@@ -23,9 +27,18 @@ export default createStore({
       state.user = JSON.parse(localStorage.getItem('user'))
       state.token = JSON.parse(localStorage.getItem('token'))
     },
-    setPoll(state, polls) {
-      state.polls = polls;
+    setPoll(state, poll) {
+      if (state.polls.length) {
+        let list = state.polls.concat(poll)
+        state.polls = list
+      } else {
+        state.polls = poll;
+      }
+    },
+    clearPolls(state) {
+      state.polls = []
     }
+
   },
   actions: {
     async fetchRoles({ commit }) {
@@ -36,7 +49,14 @@ export default createStore({
         console.error(error);
       }
     },
-
+    async removePoll({ state }, { id }) {
+      try {
+        await api.delete(`poll/${id}`);
+      } catch (error) {
+        console.log(error);
+        console.log(state);
+      }
+    },
     async signup({ state }, { email, firstName, lastName, roleId, password }) {
       try {
         state.signErr = null
@@ -60,12 +80,31 @@ export default createStore({
         console.error("Error in getPolls action:", error);
       }
     },
-    async addPoll({ state }, { title, options }) {
+    async getPollById({ commit }, { id }) {
+      try {
+        const res = await api.get(`poll/${id}`);
+        commit('setSinglePoll', res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async updatePollTitle({ state }, { title, createdBy, pollId }) {
+      try {
+        await api.put(`poll/${pollId}`, {
+          title: title,
+          createrBy: createdBy
+        })
+      } catch (error) {
+        console.log(error, state.pollLimit)
+      }
+    },
+    async addPoll({ commit, state }, { title, options }) {
       try {
         await api.post("poll/add", {
           title: title,
           options: options
         });
+        commit('setupdateTitle', title);
       } catch (error) {
         console.error("Error in addPoll action:", error);
         console.log(state)
@@ -92,6 +131,7 @@ export default createStore({
   getters: {
     getRoles: (state) => state.roles,
     getAllPolls: (state) => state.polls,
+    getSinglePoll: (state) => state.singlePoll
   },
   modules: {},
 });
