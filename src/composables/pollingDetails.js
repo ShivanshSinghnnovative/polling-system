@@ -126,15 +126,20 @@ export const createNewPollApi = () => {
   };
 };
 export const openSingleApi = () => {
+  const isLoading = ref(false);
   const store = useStore();
-  const router = useRouter()
+  const router = useRouter();
+  const titleError = ref("");
   const getPollById = async (id) => {
+    isLoading.value = true;
     try {
       await store.dispatch("getPollById", {
         id: id
       })
+      isLoading.value = false;
     } catch (error) {
       console.log(error);
+      isLoading.value = false;
     }
   }
   const singlePoll = computed(() => {
@@ -143,7 +148,9 @@ export const openSingleApi = () => {
   const goBack = (() => {
     router.go(-1);
   });
+
   const updateTitle = async (updatedText, id) => {
+    isLoading.value = true;
     if (updatedText.length > 9) {
       try {
         await store.dispatch('updatePollTitle', {
@@ -151,14 +158,19 @@ export const openSingleApi = () => {
           createdBy: 1,
           pollId: id
         })
+        isLoading.value = false;
+        router.push('/polling')
       }
       catch (error) {
         console.log(error)
+        isLoading.value = false;
       }
+    } else {
+      titleError.value = "title must be at least 10 characters "
     }
-    router.push('/polling')
+
   }
   return {
-    getPollById, goBack, singlePoll, updateTitle
+    getPollById, goBack, singlePoll, updateTitle, titleError, isLoading
   }
 }

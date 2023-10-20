@@ -1,5 +1,8 @@
 <template>
-  <div class="flex justify-center h-screen bg-gray-200 " v-if="singlePoll">
+  <span class=" text-7xl flex justify-center " v-if="isLoading">
+    <font-awesome-icon icon="fa-solid fa-spinner" spin />
+  </span>
+  <div class="flex justify-center h-screen bg-gray-200 " v-if="singlePoll && !isLoading">
     <div class=" border-black border-2 w-2/6 pl-4 pr-4 bg-white m-auto flex flex-col">
       <h1 class="text-2xl mt-3">Title : </h1>
       <input class="border-black text-2xl p-2 w-4/4 mt-2 border-2" type="text" v-model="singlePoll.title" readonly>
@@ -25,7 +28,7 @@ const route = useRoute()
 onMounted(() => {
   openSinglePoll();
 });
-const { getPollById, goBack, singlePoll } = openSingleApi();
+const { getPollById, goBack, singlePoll, isLoading } = openSingleApi();
 
 const openSinglePoll = async () => {
   const id = route.params.id;

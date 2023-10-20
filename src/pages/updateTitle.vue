@@ -1,8 +1,15 @@
 <template>
-    <div class="w-full justify-center h-screen flex flex-col bg-gray-300 text-center  m-auto ">
+    <span class=" text-7xl flex justify-center " v-if="isLoading">
+        <font-awesome-icon icon="fa-solid fa-spinner" spin />
+    </span>
+    <div v-else class="w-full justify-center h-screen flex flex-col bg-gray-300 text-center  m-auto ">
         <h3 class="text-2xl pb-6 font-bold ">Update the Existing title</h3>
-        <div class=" ">
+        <div>
             <input class="text-3xl border-black border-2 p-3 w-2/5  " v-model="title" type="text">
+
+        </div>
+        <div class="text-red-500 text-leftmd:text-lg mv:text-xs pl-2" v-if="titleError.length != 0">
+            {{ titleError }}
         </div>
         <div>
             <button
@@ -22,7 +29,7 @@ import { useRoute } from 'vue-router';
 const route = useRoute();
 const id = route.params.id
 const title = ref('')
-const { singlePoll, getPollById, goBack, updateTitle } = openSingleApi()
+const { singlePoll, getPollById, goBack, updateTitle, titleError, isLoading } = openSingleApi()
 onMounted(async () => {
     await getPollById(id)
     if (singlePoll) {
