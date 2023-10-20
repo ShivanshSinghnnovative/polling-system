@@ -167,6 +167,7 @@ export const openSingleApi = () => {
       }
     } else {
       titleError.value = "title must be at least 10 characters "
+      isLoading.value = false;
     }
 
   }
