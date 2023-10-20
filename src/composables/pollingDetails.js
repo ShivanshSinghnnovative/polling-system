@@ -6,19 +6,22 @@ export const getAllPollsApi = () => {
   const store = useStore();
   const pageNo = ref(1);
   const limit = ref(4);
+  const pollsData = computed(() => {
+    return store.getters.getAllPolls;
+  });
+  
   onMounted(async () => {
-    store.commit('clearPolls')
+    if(!pollsData.value.length){
     isLoading.value = true;
     await store.dispatch("getPolls", {
       pageNo: pageNo.value,
       limit: limit.value,
-    });
+    });}
     isLoading.value = false;
   });
-  const pollsData = computed(() => {
-    return store.getters.getAllPolls;
-  });
-  // console.log(store)
+  const showMoreButtonDisable = computed(() => {
+    return store.getters.getShowMore;
+  })
   const getMorePolls = async () => {
     isLoading.value = true;
     try {
@@ -33,21 +36,11 @@ export const getAllPollsApi = () => {
       isLoading.value = false;
     }
   };
-  const openSinglePoll = async (id) => {
-    try {
-      await store.dispatch("updateTitle", {
-        id: id
-      })
-    } catch (error) {
-      console.log(error);
-    }
-  };
   const deletePoll = async (id) => {
     try {
       await store.dispatch("removePoll", {
         id: id,
       })
-      window.location.reload();
     } catch (error) {
       console.log(error);
     }
@@ -57,7 +50,7 @@ export const getAllPollsApi = () => {
     getMorePolls,
     isLoading,
     deletePoll,
-    openSinglePoll,
+    showMoreButtonDisable
   };
 };
 export const createNewPollApi = () => {
@@ -125,7 +118,7 @@ export const createNewPollApi = () => {
     updateOption,
   };
 };
-export const openSingleApi = () => {
+export const getSinglePollandUpdateTitleById = () => {
   const isLoading = ref(false);
   const store = useStore();
   const router = useRouter();
@@ -151,11 +144,11 @@ export const openSingleApi = () => {
 
   const updateTitle = async (updatedText, id) => {
     isLoading.value = true;
-    if (updatedText.length > 9) {
+    if (updatedText.trim().length > 8) {
       try {
         await store.dispatch('updatePollTitle', {
           title: updatedText,
-          createdBy: 1,
+          createdBy: singlePoll.value.createdBy,
           pollId: id
         })
         isLoading.value = false;
@@ -166,7 +159,7 @@ export const openSingleApi = () => {
         isLoading.value = false;
       }
     } else {
-      titleError.value = "title must be at least 10 characters "
+      titleError.value = "title must be at least 9 characters "
       isLoading.value = false;
     }
 

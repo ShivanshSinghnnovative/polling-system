@@ -8,7 +8,8 @@ export default createStore({
     signErr: null,
     loginError: null,
     polls: [],
-    singlePoll: null
+    singlePoll: null,
+    showMore: true,
   },
   mutations: {
     setRoles(state, roles) {
@@ -28,6 +29,12 @@ export default createStore({
       state.token = JSON.parse(localStorage.getItem('token'))
     },
     setPoll(state, poll) {
+      if (poll.length < 4) {
+        state.showMore = false;
+      }
+      else {
+        state.showMore = true;
+      }
       if (state.polls.length) {
         let list = state.polls.concat(poll)
         state.polls = list
@@ -35,10 +42,19 @@ export default createStore({
         state.polls = poll;
       }
     },
-    clearPolls(state) {
-      state.polls = []
-    }
-
+    updatePollTitleUi(state, payload) {
+      let list = state.polls
+      list.forEach((item) => {
+        if (item.id == payload.pollId) {
+          item.title = payload.title
+        }
+      })
+      state.polls = list;
+    },
+    deleteExistingPoll(state, id) {
+      const updatedPolls = state.polls.filter(poll => poll.id !== id);
+      state.polls = updatedPolls;
+    },
   },
   actions: {
     async fetchRoles({ commit }) {
@@ -49,8 +65,9 @@ export default createStore({
         console.error(error);
       }
     },
-    async removePoll({ state }, { id }) {
+    async removePoll({ state, commit }, { id }) {
       try {
+        commit("deleteExistingPoll", id);
         await api.delete(`poll/${id}`);
       } catch (error) {
         console.log(error);
@@ -88,14 +105,15 @@ export default createStore({
         console.log(error);
       }
     },
-    async updatePollTitle({ state }, { title, createdBy, pollId }) {
+    async updatePollTitle({ state, commit }, { title, createdBy, pollId }) {
+      commit('updatePollTitleUi', { pollId, title })
       try {
         await api.put(`poll/${pollId}`, {
           title: title,
           createrBy: createdBy
         })
       } catch (error) {
-        console.log(error, state.pollLimit)
+        console.log(error, state)
       }
     },
     async addPoll({ commit, state }, { title, options }) {
@@ -131,7 +149,8 @@ export default createStore({
   getters: {
     getRoles: (state) => state.roles,
     getAllPolls: (state) => state.polls,
-    getSinglePoll: (state) => state.singlePoll
+    getSinglePoll: (state) => state.singlePoll,
+    getShowMore: (state) => state.showMore,
   },
   modules: {},
 });

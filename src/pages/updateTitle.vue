@@ -23,20 +23,17 @@
 </template>
 
 <script setup>
-import { openSingleApi } from '@/composables/pollingDetails';
+import { getSinglePollandUpdateTitleById } from '@/composables/pollingDetails';
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 const route = useRoute();
 const id = route.params.id
 const title = ref('')
-const { singlePoll, getPollById, goBack, updateTitle, titleError, isLoading } = openSingleApi()
+const { singlePoll, getPollById, goBack, updateTitle, titleError, isLoading } = getSinglePollandUpdateTitleById()
 onMounted(async () => {
     await getPollById(id)
     if (singlePoll) {
-        console.log(singlePoll.value)
         title.value = singlePoll.value.title
     }
 })
-
-
 </script>

@@ -12,7 +12,7 @@
     <div v-for="poll in polls" :key="poll.id">
       <h1 class="text-2xl font-medium breal-all break-words  md:text-xl lg:text-2xl lg:mt-3 mv:text-sm ">Title: {{
         poll.title }}
-        <span class="p-2 cursor-pointer" @click="updateTitle(poll.id, poll.createdBy)">
+        <span class="p-2 cursor-pointer" @click="updateTitle(poll.id)">
           <font-awesome-icon icon="fa-solid fa-pen" /></span>
         <span class="p-2 cursor-pointer" @click="deletePoll(poll.id)">
           <font-awesome-icon icon="fa-solid fa-trash" /></span>
@@ -30,7 +30,7 @@
       <hr>
     </div>
     <div class="w-full ml-4/5  text-right ">
-      <button @click="getMorePolls"
+      <button @click="getMorePolls"  v-if="showMoreButtonDisable"
         class=" bg-green-900 rounded-md  text-white mv:text-xs sm:text-base text-md mr-5 mt-3 mb-3 font-serif p-2 pr-3 pl-3">
         <span v-if="isLoading">
           <font-awesome-icon icon="fa-solid fa-spinner" spin />
@@ -58,6 +58,7 @@ const {
   getMorePolls,
   isLoading,
   deletePoll,
+  showMoreButtonDisable
 } = getAllPollsApi();
 
 </script>
