@@ -147,7 +147,7 @@ export const getSinglePollandUpdateTitleById = () => {
     if (updatedText.trim().length > 8) {
       try {
         await store.dispatch('updatePollTitle', {
-          title: updatedText,
+          title: updatedText.trim(),
           createdBy: singlePoll.value.createdBy,
           pollId: id
         })
