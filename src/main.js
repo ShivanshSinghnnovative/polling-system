@@ -12,9 +12,10 @@ import {
     faPlus,
     faPen,
     faTrash,
-    faArrowRight
+    faArrowRight,
+    faUser
 } from "@fortawesome/free-solid-svg-icons";
-
+library.add(faUser)
 library.add(faEye);
 library.add(faEyeSlash);
 library.add(faSpinner);

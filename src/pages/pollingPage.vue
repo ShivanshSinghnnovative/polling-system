@@ -1,10 +1,4 @@
 <template>
-  <div class="w-full mt-2 text-right">
-    <button @click="createPoll"
-      class=" bg-green-900 rounded-md text-right text-white mv:text-xs sm:text-base text-md mr-5 mt-3 mb-3 font-serif p-2 pr-3 pl-3">
-      Create Poll
-    </button>
-  </div>
   <div class="w-4/5  p-8 m-3 rounded bg-gray-100 ml-auto mr-auto">
     <span class=" text-7xl flex justify-center " v-if="isLoading && !polls.length">
       <font-awesome-icon icon="fa-solid fa-spinner" spin />
@@ -44,9 +38,6 @@
 import { useRouter } from 'vue-router';
 import { getAllPollsApi } from '@/composables/pollingDetails';
 const router = useRouter();
-const createPoll = (() => {
-  router.push('/addpoll')
-})
 const updateTitle = ((id) => {
   router.push(`/updatetitle/${id}`)
 })
