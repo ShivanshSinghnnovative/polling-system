@@ -1,11 +1,11 @@
 <template>
     <div class="bg-green-700 p-3 w-full flex justify-between pt-0 pb-0 pl-3 pr-3 mv:p-2 sm:p-3 md:p-3  ">
-        <div class="md:hidden" @click="toggleMobileMenu">Menu
+        <div class="md:hidden" v-if="user.roleId === 1" @click="toggleMobileMenu">Menu
             <div v-if="showMenu">
                 <navbarMenu />
             </div>
         </div>
-        <div class="hidden md:flex ">
+        <div class="hidden md:flex " v-if="user.roleId === 1">
             <div class="text-xl text-white mv:text-xs sm:text-base md:text-xl lg:text-2xl ">
                 <button @click="createPoll" v-if="user.roleId === 1"
                     class=" bg-green-900 rounded-md text-right text-white mv:text-xs sm:text-base text-md mr-5 mt-1 mb-0 font-serif p-2 pr-3 pl-3">
@@ -24,6 +24,12 @@
                     List User
                 </button>
             </div>
+        </div>
+        <div v-else>
+            <button @click="openAllPoll"
+            class=" bg-green-900 rounded-md text-right text-white mv:text-xs sm:text-base text-md mr-5 mt-1 mb-0 font-serif p-2 pr-3 pl-3">
+            Polls
+        </button>
         </div>
         <div class="text-2xl text-white mv:text-xs md:text-xl sm:text-base lg:text-2xl ">
         </div>
