@@ -4,30 +4,28 @@ import { useRouter } from "vue-router";
 export const getAllPollsApi = () => {
   const isLoading = ref(false);
   const store = useStore();
-  const pageNo = ref(1);
+  // const pageNo = ref(1);
   const limit = ref(4);
   const pollsData = computed(() => {
     return store.getters.getAllPolls;
   });
-  
+
   onMounted(async () => {
-    if(!pollsData.value.length){
-    isLoading.value = true;
-    await store.dispatch("getPolls", {
-      pageNo: pageNo.value,
-      limit: limit.value,
-    });}
+    if (!pollsData.value.length) {
+      isLoading.value = true;
+      await store.dispatch("getPolls", {
+        pageNo: store.state.pageNo,
+        limit: limit.value,
+      });
+    }
     isLoading.value = false;
   });
-  const showMoreButtonDisable = computed(() => {
-    return store.getters.getShowMore;
-  })
   const getMorePolls = async () => {
     isLoading.value = true;
     try {
-      pageNo.value++;
+      await store.dispatch("incrementPageNo");
       await store.dispatch("getPolls", {
-        pageNo: pageNo.value,
+        pageNo: store.state.pageNo,
         limit: limit.value,
       });
       isLoading.value = false;
@@ -50,10 +48,14 @@ export const getAllPollsApi = () => {
     getMorePolls,
     isLoading,
     deletePoll,
-    showMoreButtonDisable
+    showMoreButtonDisable: computed(() => {
+      return store.getters.getShowMore;
+    })
   };
 };
-export const createNewPollApi = () => {
+//for create and update tPOLll dgdpvkdmfoigj
+export const createUpdateandopenSinglePagePollApi = () => {
+  const isLoading = ref(false);
   const store = useStore();
   const newPoll = reactive({
     title: "",
@@ -65,6 +67,49 @@ export const createNewPollApi = () => {
   let i = 0;
   const option = ref("");
   const addError = ref("");
+  const getPollById = async (id) => {
+    isLoading.value = true;
+    try {
+      await store.dispatch("getPollById", {
+        id: id
+      })
+      isLoading.value = false;
+    } catch (error) {
+      console.log(error);
+      isLoading.value = false;
+    }
+  }
+
+  const singlePoll = computed(() => {
+    return store.getters.getSinglePoll;
+  });
+  const updateTitle = async (updatedText, id) => {
+    isLoading.value = true;
+    if (updatedText.trim().length > 8) {
+      if (newPoll.options.length > 2) {
+        try {
+          await store.dispatch('updatePollTitle', {
+            title: updatedText.trim(),
+            createdBy: singlePoll.value.createdBy,
+            pollId: id
+          })
+          isLoading.value = false;
+          router.push('/polling')
+        }
+        catch (error) {
+          console.log(error)
+          isLoading.value = false;
+        }
+      } else {
+        isLoading.value = false;
+        addError.value = "please add atleast 3 options";
+      }
+    } else {
+      addError.value = "title must be at least 9 characters "
+      isLoading.value = false;
+    }
+
+  }
   const addNewPoll = async () => {
     for (let j = 0; j < newPoll.options.length; j++) {
       optionTitle[j] = {
@@ -82,7 +127,6 @@ export const createNewPollApi = () => {
         } catch (error) {
           console.log(error);
         }
-
         addError.value = "";
       } else {
         addError.value = "please add atleast 3 options";
@@ -99,6 +143,9 @@ export const createNewPollApi = () => {
     }
     addError.value = "";
   };
+  const goBack = () => {
+    router.go(-1);
+  };
   const deleteOption = (index) => {
     newPoll.options.splice(index, 1);
     i--
@@ -108,6 +155,36 @@ export const createNewPollApi = () => {
     newPoll.options.splice(index, 1);
     i--
   };
+  const updateExistingPollOption = (options, index) => {
+    console.log(options, index)
+    option.value = options;
+    option.value = options;
+  };
+  const updateExistingOption = async (options, optionId, id) => {
+    try {
+      await store.dispatch('updatePollOption', {
+        option: options,
+        pollOptionId: optionId,
+        pollId: id
+      })
+      console.log(newPoll.options)
+      const existingOptionIndex = newPoll.options.findIndex(opt => opt.id === optionId);
+      if (existingOptionIndex == -1) {
+        newPoll.options.push(options);
+      }
+      console.log(newPoll.options)
+      option.value = "";
+      if (option.value) {
+        newPoll.options[i] = options;
+        i++;
+        option.value = "";
+      }
+      addError.value = "";
+    }
+    catch (error) {
+      console.log(error);
+    }
+  };
   return {
     addNewPoll,
     newPoll,
@@ -116,55 +193,12 @@ export const createNewPollApi = () => {
     option,
     deleteOption,
     updateOption,
+    goBack,
+    getPollById,
+    singlePoll,
+    updateTitle,
+    updateExistingOption,
+    updateExistingPollOption,
+    isLoading
   };
 };
-export const getSinglePollandUpdateTitleById = () => {
-  const isLoading = ref(false);
-  const store = useStore();
-  const router = useRouter();
-  const titleError = ref("");
-  const getPollById = async (id) => {
-    isLoading.value = true;
-    try {
-      await store.dispatch("getPollById", {
-        id: id
-      })
-      isLoading.value = false;
-    } catch (error) {
-      console.log(error);
-      isLoading.value = false;
-    }
-  }
-  const singlePoll = computed(() => {
-    return store.getters.getSinglePoll;
-  });
-  const goBack = (() => {
-    router.go(-1);
-  });
-
-  const updateTitle = async (updatedText, id) => {
-    isLoading.value = true;
-    if (updatedText.trim().length > 8) {
-      try {
-        await store.dispatch('updatePollTitle', {
-          title: updatedText.trim(),
-          createdBy: singlePoll.value.createdBy,
-          pollId: id
-        })
-        isLoading.value = false;
-        router.push('/polling')
-      }
-      catch (error) {
-        console.log(error)
-        isLoading.value = false;
-      }
-    } else {
-      titleError.value = "title must be at least 9 characters "
-      isLoading.value = false;
-    }
-
-  }
-  return {
-    getPollById, goBack, singlePoll, updateTitle, titleError, isLoading
-  }
-}

@@ -9,15 +9,11 @@
 </template>
 <script setup>
 import { useRouter } from 'vue-router';
-import { defineProps } from 'vue';
+
 const router = useRouter()
 import { useStore } from 'vuex';
 const store = useStore()
-defineProps({
-    user: {
-        type: Object
-    }
-})
+
 const logoutUser = async () => {
     localStorage.removeItem('user')
     localStorage.removeItem('token')

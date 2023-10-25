@@ -27,9 +27,9 @@
         </div>
         <div v-else>
             <button @click="openAllPoll"
-            class=" bg-green-900 rounded-md text-right text-white mv:text-xs sm:text-base text-md mr-5 mt-1 mb-0 font-serif p-2 pr-3 pl-3">
-            Polls
-        </button>
+                class=" bg-green-900 rounded-md text-right text-white mv:text-xs sm:text-base text-md mr-5 mt-1 mb-0 font-serif p-2 pr-3 pl-3">
+                Polls
+            </button>
         </div>
         <div class="text-2xl text-white mv:text-xs md:text-xl sm:text-base lg:text-2xl ">
         </div>
@@ -40,8 +40,8 @@
                     <div> {{ user.firstName }} {{ user.lastName }} </div>
                     {{ user.email }}
                 </div>
-                <div class=" bg-blue-300 pl-4 pr-4 pt-2.5 pb-2.5 mt-0 ml-2 mb-0 rounded-full ">
-                    <font-awesome-icon :icon="['fas', 'user']" @click="toggleLogoutModal" />
+                <div class=" bg-blue-300 pl-4 pr-4 pt-2.5 pb-2.5 mt-0 ml-2 mb-0 rounded-full " @click="toggleLogoutModal">
+                    <font-awesome-icon :icon="['fas', 'user']" />
                 </div>
             </button>
             <div v-if="toggleLogout">
@@ -78,7 +78,5 @@ const toggleMobileMenu = () => {
 const toggleLogout = ref(false);
 const toggleLogoutModal = () => {
     toggleLogout.value = !toggleLogout.value;
-    console.log(toggleLogout.value)
-    console.log(user.value)
 }
 </script>

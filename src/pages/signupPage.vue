@@ -52,7 +52,7 @@
                 </div>
                 <button
                     class="md:m-4 mv:m-2 xll:text-3xl rounded-md md:mb-1 md:p-2 mv:p-1 bg-green-700 text-white md:text-3xl mv:text-base cursor-pointer border-none">
-                    <span v-if="isLoading"> <font-awesome-icon icon="fa-solid fa-spinner" /></span>
+                    <span v-if="isLoading">  <loaderIcon/> </span>
                     <span v-else>Create account</span>
                 </button>
                 <div v-if="openSuccesModal"
@@ -75,6 +75,7 @@
 
 <script setup>
 import { signupApi } from "../composables/loginSignup.js";
+import loaderIcon from "../components/loaderIcon.vue"
 import sucessSignup from "../components/sucessSignupModal.vue";
 
 const {
