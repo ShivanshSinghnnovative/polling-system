@@ -117,7 +117,6 @@ export default createStore({
       }
     },
     async getPolls({ commit }, { pageNo, limit }) {
-      // console.log(pageNo, "pageNo")
       try {
         const response = await api.get(`poll/list/${pageNo}?limit=${limit}`,);
         commit('setPoll', response.data.rows);

@@ -4,12 +4,10 @@ import { useRouter } from "vue-router";
 export const getAllPollsApi = () => {
   const isLoading = ref(false);
   const store = useStore();
-  // const pageNo = ref(1);
   const limit = ref(4);
   const pollsData = computed(() => {
     return store.getters.getAllPolls;
   });
-
   onMounted(async () => {
     if (!pollsData.value.length) {
       isLoading.value = true;
@@ -53,7 +51,6 @@ export const getAllPollsApi = () => {
     })
   };
 };
-//for create and update tPOLll dgdpvkdmfoigj
 export const createUpdateandopenSinglePagePollApi = () => {
   const isLoading = ref(false);
   const store = useStore();
@@ -108,7 +105,6 @@ export const createUpdateandopenSinglePagePollApi = () => {
       addError.value = "title must be at least 9 characters "
       isLoading.value = false;
     }
-
   }
   const addNewPoll = async () => {
     for (let j = 0; j < newPoll.options.length; j++) {
@@ -167,7 +163,6 @@ export const createUpdateandopenSinglePagePollApi = () => {
         pollOptionId: optionId,
         pollId: id
       })
-      console.log(newPoll.options)
       const existingOptionIndex = newPoll.options.findIndex(opt => opt.id === optionId);
       if (existingOptionIndex == -1) {
         newPoll.options.push(options);

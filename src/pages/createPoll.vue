@@ -42,7 +42,6 @@
                                 <font-awesome-icon icon="fa-solid fa-trash" /></span>
                         </div>
                     </span>
-
                 </div>
             </div>
             <h4 class=" text-sm text-red-500">{{ addError }}</h4>
