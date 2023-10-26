@@ -11,7 +11,8 @@
 </template>
 <script setup>
 import { useRouter } from 'vue-router';
-
+import { defineEmits } from 'vue';
+const  emit = defineEmits();
 const router = useRouter()
 import { useStore } from 'vuex';
 const store = useStore()
@@ -23,7 +24,7 @@ const logoutUser = async () => {
     router.push('/')
 }
 const closeMenu = () => {
-    const backdrop = document.querySelector('.bg-opacity-50');
-    backdrop.parentNode.removeChild(backdrop);
+    emit('close-modal');
+
 };
 </script>

@@ -166,7 +166,6 @@ export const createUpdateandopenSinglePagePollApi = () => {
   const updateExistingPollOption = (options, index) => {
     console.log(options, index)
     option.value = options;
-    option.value = options;
   };
   const addOptionInExistingPoll = async (newOption, id) => {
     if (option.value.trim() !== '') {
@@ -196,15 +195,12 @@ export const createUpdateandopenSinglePagePollApi = () => {
         pollOptionId: optionId,
         pollId: id
       })
-      const existingOptionIndex = newPoll.options.findIndex(opt => opt.id === optionId);
-      if (existingOptionIndex == -1) {
-        newPoll.options.push(options);
-      }
       option.value = "";
       if (option.value) {
         newPoll.options[i] = options;
         i++;
         option.value = "";
+        console.log("11ds")
       }
       addError.value = "";
     }

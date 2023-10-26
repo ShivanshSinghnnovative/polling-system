@@ -36,7 +36,7 @@
                 </div>
             </button>
             <div v-if="toggleLogout">
-                <logoutModal :user="user" />
+                <logoutModal :user="user"  @close-modal="toggleLogoutModal"  />
             </div>
         </div>
     </div>
@@ -44,6 +44,7 @@
 <script setup>
 import logoutModal from './logoutModal.vue'
 import navbarMenu from './navbarMenu.vue'
+import { routesArr } from '../navMenuDetails/config.js';
 import { useStore } from 'vuex';
 import { computed, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
@@ -59,32 +60,7 @@ onMounted(() => {
 const router = useRouter();
 const showMenu = ref(false);
 const activeButton = ref(null);
-const routesArr = [
-    {
-        id: '1',
-        title: 'Add Poll',
-        href: '/addpoll',
-        name: 'createpoll'
-    },
-    {
-        id: '2',
-        title: 'Polls',
-        href: '/polling',
-        name: 'polling'
-    },
-    {
-        id: '3',
-        title: 'Create User',
-        href: '/',
-        name: ''
-    },
-    {
-        id: '4',
-        title: 'List User',
-        href: '/',
-        name: ''
-    }
-]
+
 const openAllPoll = (() => {
     router.push('/polling')
 })
