@@ -132,7 +132,7 @@ export const createUpdateandopenSinglePagePollApi = () => {
     }
   };
   const addOptions = () => {
-    if (option.value) {
+    if (option.value.trim() !== '') {
       newPoll.options[i] = option.value;
       i++;
       option.value = "";
@@ -146,6 +146,18 @@ export const createUpdateandopenSinglePagePollApi = () => {
     newPoll.options.splice(index, 1);
     i--
   };
+  const deleteExistingOption = async (index, id) => {
+    newPoll.options.splice(index, 1);
+    i--
+    console.log(id);
+    try {
+      await store.dispatch("removeExistingOption", {
+        id: id,
+      })
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const updateOption = (key, index) => {
     option.value = key;
     newPoll.options.splice(index, 1);
@@ -155,6 +167,27 @@ export const createUpdateandopenSinglePagePollApi = () => {
     console.log(options, index)
     option.value = options;
     option.value = options;
+  };
+  const addOptionInExistingPoll = async (newOption, id) => {
+    if (option.value.trim() !== '') {
+      try {
+        await store.dispatch('addOptionInExistingPoll', {
+          pollId: id,
+          pollNewOption: newOption
+        })
+        option.value = "";
+        await getPollById(id)
+        if (singlePoll.value) {
+          newPoll.title = singlePoll.value.title
+          newPoll.options = singlePoll.value.optionList
+        }
+      }
+      catch (error) {
+        console.log(error);
+      }
+    } else {
+      addError.value = "enter minimum 1 character";
+    }
   };
   const updateExistingOption = async (options, optionId, id) => {
     try {
@@ -167,7 +200,6 @@ export const createUpdateandopenSinglePagePollApi = () => {
       if (existingOptionIndex == -1) {
         newPoll.options.push(options);
       }
-      console.log(newPoll.options)
       option.value = "";
       if (option.value) {
         newPoll.options[i] = options;
@@ -192,8 +224,10 @@ export const createUpdateandopenSinglePagePollApi = () => {
     getPollById,
     singlePoll,
     updateTitle,
+    deleteExistingOption,
     updateExistingOption,
     updateExistingPollOption,
+    addOptionInExistingPoll,
     isLoading
   };
 };

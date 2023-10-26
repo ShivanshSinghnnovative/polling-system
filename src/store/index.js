@@ -92,6 +92,16 @@ export default createStore({
         console.log(state);
       }
     },
+    async addOptionInExistingPoll({ state }, { pollNewOption, pollId }) {
+      try {
+        await api.post(`poll/addPollOption/${pollId}`, {
+          optionTitle: pollNewOption
+        });
+      } catch (error) {
+        console.log(error);
+        console.log(state);
+      }
+    },
     async removeExistingOption({ state, commit }, { id }) {
       try {
         commit("deleteExistingPoll", id);
@@ -158,6 +168,8 @@ export default createStore({
       }
     },
     async addPoll({ commit, state }, { title, options }) {
+      state.polls = "";
+      state.pageNo = 1;
       try {
         await api.post("poll/add", {
           title: title,

@@ -1,29 +1,20 @@
 <template>
     <div class="bg-green-700 p-3 w-full flex justify-between pt-0 pb-0 pl-3 pr-3 mv:p-2 sm:p-3 md:p-3  ">
-        <div class="md:hidden" v-if="user.roleId === 1" @click="toggleMobileMenu">Menu
+        <div class="md:hidden text-white text-base text-bold " v-if="user.roleId === 1" @click="toggleMobileMenu">Menu
             <div v-if="showMenu">
                 <navbarMenu />
             </div>
         </div>
         <div class="hidden md:flex " v-if="user.roleId === 1">
-            <div class="text-xl text-white mv:text-xs sm:text-base md:text-xl lg:text-2xl ">
-                <button @click="createPoll" v-if="user.roleId === 1"
-                    class=" bg-green-900 rounded-md text-right text-white mv:text-xs sm:text-base text-md mr-5 mt-1 mb-0 font-serif p-2 pr-3 pl-3">
-                    Add Poll
-                </button>
-                <button @click="openAllPoll"
-                    class=" bg-green-900 rounded-md text-right text-white mv:text-xs sm:text-base text-md mr-5 mt-1 mb-0 font-serif p-2 pr-3 pl-3">
-                    Polls
-                </button>
-                <button v-if="user.roleId === 1"
-                    class=" bg-green-900 rounded-md text-right text-white mv:text-xs sm:text-base text-md mr-5 mt-1 mb-0 font-serif p-2 pr-3 pl-3">
-                    Create User
-                </button>
-                <button v-if="user.roleId === 1"
-                    class=" bg-green-900 rounded-md text-right text-white mv:text-xs sm:text-base text-md mr-5 mt-1 mb-0 font-serif p-2 pr-3 pl-3">
-                    List User
+            <div class="text-xl text-white xl:text-xl mv:text-xs sm:text-base md:text-xl lg:text-2xl "
+                v-for="item in routesArr" :key="item.id">
+                <button @click="navigateRoute(item.id, item.href)"
+                    class="rounded-md text-center text-white mv:text-xx sm:text-xy text-md mr-5 mt-1 mb-2 font-serif p-2 pr-3 pl-3"
+                    :class="currentRoute === item.name ? 'bg-blue-900' : 'bg-green-900'">
+                    {{ item.title }}
                 </button>
             </div>
+
         </div>
         <div v-else>
             <button @click="openAllPoll"
@@ -55,22 +46,56 @@ import logoutModal from './logoutModal.vue'
 import navbarMenu from './navbarMenu.vue'
 import { useStore } from 'vuex';
 import { computed, onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
+
 const store = useStore()
 const user = computed(() => {
     return store.state.user
 })
 onMounted(() => {
     store.commit('setUserDetails')
+    console.log()
 })
-import { useRouter } from 'vue-router';
 const router = useRouter();
-const createPoll = (() => {
-    router.push('/addpoll')
-})
+const showMenu = ref(false);
+const activeButton = ref(null);
+const routesArr = [
+    {
+        id: '1',
+        title: 'Add Poll',
+        href: '/addpoll',
+        name: 'createpoll'
+    },
+    {
+        id: '2',
+        title: 'Polls',
+        href: '/polling',
+        name: 'polling'
+    },
+    {
+        id: '3',
+        title: 'Create User',
+        href: '/',
+        name: ''
+    },
+    {
+        id: '4',
+        title: 'List User',
+        href: '/',
+        name: ''
+    }
+]
 const openAllPoll = (() => {
     router.push('/polling')
 })
-const showMenu = ref(false);
+const navigateRoute = (id, href) => {
+    router.push(`${href}`)
+    activeButton.value = id
+}
+
+const currentRoute = computed(() => {
+    return (router.currentRoute.value.name)
+})
 
 const toggleMobileMenu = () => {
     showMenu.value = !showMenu.value;

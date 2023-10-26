@@ -8,17 +8,28 @@
             <input type="text" placeholder="enter title" v-model="newPoll.title"
                 class="border-black border-2 md:text-2xl  rounded p-2 mv:text-lg m-2 xl:text-2xl ">
             <label class=" xl:text-2xl md:text-2xl  mv:text-lg m-2">Options:</label>
-            <div v-if="id !== undefined && id !== null"
-                class="border-black flex border-2 rounded p-2 m-2 mv:text-lg justify-between text-2xl ">
-                <input v-model="option.optionTitle" class="outline-none md:text-2xl  mv:text-lg w-4/5"
-                    placeholder="Enter options">
-                <div @click="updateExistingOption(option.optionTitle, option.id, id)"
-                    v-if="option.optionTitle && option.optionTitle.trim().length > 0" class="cursor-pointer">
-                    <font-awesome-icon icon="fa-solid fa-plus" />
+            <div v-if="id !== undefined && id !== null">
+                <div v-if="option.optionTitle"
+                    class="border-black flex border-2 rounded p-2 m-2 mv:text-lg justify-between text-2xl ">
+                    <input v-model="option.optionTitle" class="outline-none md:text-2xl  mv:text-lg w-4/5"
+                        placeholder="Enter options">
+                    <div @click="updateExistingOption(option.optionTitle, option.id, id)"
+                        v-if="option.optionTitle && option.optionTitle.trim().length > 0" class="cursor-pointer">
+                        <font-awesome-icon icon="fa-solid fa-plus" />
+                    </div>
+                </div>
+                <div v-else class="border-black flex border-2 rounded p-2 m-2 mv:text-lg justify-between text-2xl ">
+                    <input v-model="option" @keyup.enter="addOptionInExistingPoll(option, id)"
+                        class="outline-none md:text-2xl  mv:text-lg w-4/5" placeholder="Enter options">
+                    <div @click="addOptionInExistingPoll(option, id)" v-if="option.trim().length > 0"
+                        class="cursor-pointer">
+                        <font-awesome-icon icon="fa-solid fa-plus" />
+                    </div>
                 </div>
             </div>
             <div v-else class="border-black flex border-2 rounded p-2 m-2 mv:text-lg justify-between text-2xl ">
-                <input v-model="option" class="outline-none md:text-2xl  mv:text-lg w-4/5" placeholder="Enter options">
+                <input v-model="option" @keyup.enter="addOptions" class="outline-none md:text-2xl  mv:text-lg w-4/5"
+                    placeholder="Enter options">
                 <div @click="addOptions" v-if="option.trim().length > 0" class="cursor-pointer">
                     <font-awesome-icon icon="fa-solid fa-plus" />
                 </div>
@@ -31,14 +42,16 @@
                             <span class=" text-xl p-2">{{ item.optionTitle }}</span>
                             <span class="p-2 cursor-pointer" @click="updateExistingPollOption(item, index)">
                                 <font-awesome-icon icon="fa-solid fa-pen" /></span>
+                            <span class="p-2 cursor-pointer" @click="deleteExistingOption(index, item.id)"
+                                v-if="newPoll.options.length > 3">
+                                <font-awesome-icon icon="fa-solid fa-trash" /></span>
                         </div>
                         <div class="border-black border-2 m-2 rounded p-1 md:text-2xl  mv:text-lg bg-gray-200 "
                             v-if="id == undefined && id == null && item.id == option.id">
                             <span class="text-xl p-2">{{ item }}</span>
                             <span class="p-2 cursor-pointer" @click="updateOption(item, index)">
                                 <font-awesome-icon icon="fa-solid fa-pen" /></span>
-                            <span class="p-2 cursor-pointer" v-if="id == undefined && id == null"
-                                @click="deleteOption(index)">
+                            <span class="p-2 cursor-pointer" @click="deleteOption(index)">
                                 <font-awesome-icon icon="fa-solid fa-trash" /></span>
                         </div>
                     </span>
@@ -77,6 +90,8 @@ const {
     singlePoll,
     getPollById,
     updateTitle,
+    deleteExistingOption,
+    addOptionInExistingPoll,
     updateExistingPollOption,
     updateExistingOption,
     isLoading
