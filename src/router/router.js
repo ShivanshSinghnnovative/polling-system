@@ -6,13 +6,13 @@ const commonBeforeEnter = (to, from, next) => {
   if (userIsLoggedIn()) {
     next();
   } else {
-    next({ name: 'login' });
+    next('/');
   }
 };
 const afterSucessfullloginsignup = (to, from, next) => {
 
   if (userIsLoggedIn()) {
-    next({ name: 'polling' });
+    next('/polling');
   } else {
     next();
   }
@@ -33,7 +33,7 @@ const routes = [
   {
     path: '/polling',
     name: 'polling',
-    component: () => import('../pages/pollingPage.vue'),
+    component: () => import('../pages/pollListPage.vue'),
     beforeEnter: commonBeforeEnter,
   },
   {
@@ -41,23 +41,30 @@ const routes = [
     name: 'createpoll',
     component: () => import("../pages/createPoll.vue"),
     beforeEnter: commonBeforeEnter,
+  },
+  {
+    path: '/updatepoll/:id',
+    name: 'updatetitles',
+    component: () => import("../pages/createPoll.vue"),
+    beforeEnter: commonBeforeEnter,
+  },
+  {
+    path: '/singlepoll/:id',
+    name: 'singlepoll',
+    component: () => import("../pages/singlePoll.vue"),
+    beforeEnter: commonBeforeEnter,
   }
 ];
 const router = createRouter({
   history: createWebHashHistory(process.env.BASE_URL),
   routes
 })
-
 router.beforeEach((to, from, next) => {
   const isLoggedOut = (to.name !== 'login' && to.name !== 'signup' && !userIsLoggedIn());
-
   if (isLoggedOut) {
     next({ name: 'login' });
   } else {
     next();
   }
 });
-
-
-
 export default router

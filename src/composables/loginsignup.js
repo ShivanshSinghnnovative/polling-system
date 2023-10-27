@@ -82,7 +82,7 @@ export const signupApi = () => {
                 "Password must contain at least one digit, one lowercase letter, and one uppercase letter";
         }
         if (emailRegex.test(signUser.email)) {
-            if (signUser.firstName.length > 4 && signUser.lastName.length > 4) {
+            if (signUser.firstName.trim().length > 4 && signUser.lastName.trim().length > 4) {
                 if (passwordRegex.test(signUser.password)) {
                     isLoading.value = true;
                     signUpErr.value = "";

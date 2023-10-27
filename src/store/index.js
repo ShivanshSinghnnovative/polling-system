@@ -1,4 +1,5 @@
 import { createStore } from "vuex";
+import { ref } from 'vue';
 import api from "../composables/deatailsApi.js"
 export default createStore({
   state: {
@@ -8,13 +9,22 @@ export default createStore({
     signErr: null,
     loginError: null,
     polls: [],
+    singlePoll: null,
+    showMore: true,
+    pageNo: ref(1),
   },
   mutations: {
     setRoles(state, roles) {
       state.roles = roles;
     },
+    setSinglePoll(state, poll) {
+      state.singlePoll = poll
+    },
     setLoginError(state, error) {
       state.loginError = error;
+    },
+    setPageNo(state, pageNo) {
+      state.pageNo = pageNo;
     },
     clearLoginError(state) {
       state.loginError = null;
@@ -23,9 +33,46 @@ export default createStore({
       state.user = JSON.parse(localStorage.getItem('user'))
       state.token = JSON.parse(localStorage.getItem('token'))
     },
-    setPoll(state, polls) {
-      state.polls = polls;
-    }
+    setPoll(state, poll) {
+      if (poll.length < 4) {
+        state.showMore = false;
+      }
+      else {
+        state.showMore = true;
+      }
+      if (state.polls.length) {
+        let list = state.polls.concat(poll)
+        state.polls = list
+      } else {
+        state.polls = poll;
+      }
+    },
+    updatePollList(state, payload) {
+      let list = state.polls
+      list.forEach((item) => {
+        if (item.id == payload.pollId) {
+          item.title = payload.title
+        }
+      })
+      state.polls = list;
+    },
+    updatePollOptionUi(state, payload) {
+      let list = state.polls;
+      list.forEach((item) => {
+        if (item.id == payload.pollId) {
+          const optionIndex = item.optionList.findIndex(opt => opt.id === payload.optionId);
+          if (optionIndex !== -1) {
+            item.optionList[optionIndex].optionTitle = payload.optionTitle;
+          }
+        }
+      });
+      state.polls = list;
+    },
+
+    deleteExistingPoll(state, id) {
+      const updatedPolls = state.polls.filter(poll => poll.id !== id);
+      state.polls = updatedPolls;
+    },
   },
   actions: {
     async fetchRoles({ commit }) {
@@ -36,7 +83,31 @@ export default createStore({
         console.error(error);
       }
     },
-
+    async removePoll({ state, commit }, { id }) {
+      try {
+        commit("deleteExistingPoll", id);
+        await api.delete(`poll/${id}`);
+      } catch (error) {
+        console.log(error, state);
+      }
+    },
+    async addOptionInExistingPoll({ state }, { pollNewOption, pollId }) {
+      try {
+        await api.post(`poll/addPollOption/${pollId}`, {
+          optionTitle: pollNewOption
+        });
+      } catch (error) {
+        console.log(error, state);
+      }
+    },
+    async removeExistingOption({ state, commit }, { id }) {
+      try {
+        await api.delete(`/option/delete/${id}`);
+        commit("deleteExistingPoll", id);
+      } catch (error) {
+        console.log(error, state);
+      }
+    },
     async signup({ state }, { email, firstName, lastName, roleId, password }) {
       try {
         state.signErr = null
@@ -60,18 +131,56 @@ export default createStore({
         console.error("Error in getPolls action:", error);
       }
     },
-    async addPoll({ state }, { title, options }) {
+    async getPollById({ commit }, { id }) {
+      try {
+        const res = await api.get(`poll/${id}`);
+        commit('setSinglePoll', res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async updatePollTitle({ state, commit }, { title, createdBy, pollId }) {
+      try {
+        await api.put(`poll/${pollId}`, {
+          title: title,
+          createrBy: createdBy
+        })
+        commit('updatePollList', { pollId, title })
+      } catch (error) {
+        console.log(error, state)
+      }
+    },
+    async updatePollOption({ state, commit }, { option, pollOptionId, pollId }) {
+      try {
+        await api.put(`option/edit/${pollOptionId}`, {
+          optionTitle: option,
+        })
+        commit('updatePollOptionUi', {
+          pollId: pollId,
+          optionId: pollOptionId,
+          optionTitle: option,
+        });
+      } catch (error) {
+        console.log(error, state)
+      }
+    },
+    async addPoll({ commit, state }, { title, options }) {
+      state.polls = "";
+      state.pageNo = 1;
       try {
         await api.post("poll/add", {
           title: title,
           options: options
         });
+        commit('setupdateTitle', title);
       } catch (error) {
         console.error("Error in addPoll action:", error);
         console.log(state)
       }
     },
-
+    incrementPageNo({ commit, state }) {
+      commit("setPageNo", state.pageNo + 1);
+    },
     async login({ commit }, { email, password }) {
       try {
         commit('clearLoginError');
@@ -79,7 +188,6 @@ export default createStore({
           email: email,
           password: password,
         });
-        console.log(response)
         localStorage.setItem('user', JSON.stringify(response.data.user));
         localStorage.setItem('token', JSON.stringify(response.data.token));
         commit('setUserDetails')
@@ -92,6 +200,9 @@ export default createStore({
   getters: {
     getRoles: (state) => state.roles,
     getAllPolls: (state) => state.polls,
+    getSinglePoll: (state) => state.singlePoll,
+    getShowMore: (state) => state.showMore,
+    getPageNo: (state) => state.pageNo.value,
   },
   modules: {},
 });
