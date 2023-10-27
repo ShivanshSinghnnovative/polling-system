@@ -36,7 +36,7 @@
                 </div>
             </button>
             <div v-if="toggleLogout">
-                <logoutModal :user="user"  @close-modal="toggleLogoutModal"  />
+                <logoutModal :user="user"  @closeModal="toggleLogoutModal"  />
             </div>
         </div>
     </div>

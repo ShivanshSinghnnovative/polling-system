@@ -3,13 +3,16 @@
     <span class=" text-7xl flex justify-center " v-if="isLoading && !polls.length">
       <loaderIcon />
     </span>
+
     <div v-for="poll in polls" :key="poll.id">
       <h1 class="text-2xl font-medium breal-all break-words md:text-xl lg:text-2xl lg:mt-3 mv:text-sm ">Title: {{
         poll.title }}
         <span class="p-2 cursor-pointer" @click="updateTitle(poll.id)" v-if="user && user.roleId === 1">
           <font-awesome-icon icon="fa-solid fa-pen" /></span>
-        <span class="p-2 cursor-pointer" @click="deletePoll(poll.id)" v-if="user && user.roleId === 1">
-          <font-awesome-icon icon="fa-solid fa-trash" /></span>
+        <span class="p-2 cursor-pointer" @click="openDeleteModal(poll.id)" v-if="user && user.roleId === 1">
+          <font-awesome-icon icon="fa-solid fa-trash" />
+          
+        </span>
         <span class="p-2 cursor-pointer" @click="openSinglePoll(poll.id)">
           <font-awesome-icon icon="fa-solid fa-arrow-right" /></span>
       </h1>
@@ -20,7 +23,11 @@
           {{ opt.optionTitle }}
         </h3>
       </div>
+
       <hr>
+    </div>
+    <div v-if="deletePopUp">
+      <deleteModal @confirmDelete="confirmDelete" @openDeleteModal="openDeleteModal" />
     </div>
     <div class="w-full ml-4/5  text-right ">
       <button @click="getMorePolls" v-if="showMoreButtonDisable"
@@ -30,21 +37,23 @@
         </span>
         <span v-else>Show More</span></button>
     </div>
+
   </div>
 </template>
 
 <script setup>
 import { useRouter } from 'vue-router';
+import deleteModal from '../components/deletePopModal.vue'
 import loaderIcon from "../components/loaderIcon.vue"
 import { getAllPollsApi } from '@/composables/pollingDetails';
 const router = useRouter();
 import { useStore } from 'vuex';
-import { computed, onMounted } from 'vue';
+import { computed, onMounted, ref } from 'vue';
+const deletePopUp = ref(false);
 const store = useStore()
 const user = computed(() => {
   return store.state.user
 })
-
 onMounted(() => {
   store.commit('setUserDetails')
 })
@@ -54,6 +63,17 @@ const updateTitle = ((id) => {
 const openSinglePoll = ((id) => {
   router.push(`/singlepoll/${id}`)
 })
+const pollId = ref(null); 
+
+const openDeleteModal = (id) => {
+  deletePopUp.value = !deletePopUp.value;
+  pollId.value = id;
+};
+
+const confirmDelete = async () => {
+  await deletePoll(pollId.value);
+  deletePopUp.value = false
+}
 const {
   polls,
   getMorePolls,
