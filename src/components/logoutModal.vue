@@ -20,6 +20,8 @@ const store = useStore()
 const logoutUser = async () => {
     localStorage.removeItem('user')
     localStorage.removeItem('token')
+    localStorage.removeItem('voteOptionPollIds')
+    localStorage.removeItem('voteOptionIds')
     await store.commit('setUserDetails')
     router.push('/')
 }

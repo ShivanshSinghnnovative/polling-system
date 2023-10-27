@@ -11,7 +11,9 @@
           <font-awesome-icon icon="fa-solid fa-pen" /></span>
         <span class="p-2 cursor-pointer" @click="openDeleteModal(poll.id)" v-if="user && user.roleId === 1">
           <font-awesome-icon icon="fa-solid fa-trash" />
-
+        </span>  
+        <span class="p-2 cursor-pointer" @click="showResult"  v-if="user && user.roleId === 1">
+          <font-awesome-icon :icon="['fas', 'chart-bar']" />
         </span>
         <span class="p-2 cursor-pointer" @click="openSinglePoll(poll.id)">
           <font-awesome-icon icon="fa-solid fa-arrow-right" /></span>
@@ -19,12 +21,20 @@
       <h1 class="text-xl pt-2 pb-1 mv:text-xs md:text-lg ">Options: </h1>
       <div v-for="opt in poll.optionList" :key="opt.id" class="bg-white">
         <h3 class="pl-4 pt-4 mv:text-xs mv:pt-2 md:pt-3 md:text-lg ">
-          <input type="checkbox" class="p-4 cursor-pointer">
+          <input :disabled="isOptionDisabled(opt.pollId)" name="x" @click="selectedOption(opt.id, opt.pollId)"
+            type="radio" v-if="!votedOption(opt.id) " class="p-4 cursor-pointer">
+          <input v-else :disabled="isOptionDisabled(opt.pollId)" type="radio" checked >
           {{ opt.optionTitle }}
         </h3>
       </div>
-
+      <button @click="increaseVote()" v-if="poll.id == voteOptionPollId && !isOptionDisabled(poll.id)"
+        class=" bg-green-900 rounded-md  text-white mv:text-xs sm:text-base text-md mr-5 mt-3 mb-3 font-serif p-2 pr-3 pl-3">
+        Vote
+      </button>
       <hr>
+    </div>
+    <div v-if="resultPopUp">
+      <barChart @openResultModal="showResult"/>
     </div>
     <div v-if="deletePopUp">
       <deleteModal @confirmDelete="confirmDelete" @openDeleteModal="openDeleteModal">
@@ -45,13 +55,16 @@
 
 <script setup>
 import { useRouter } from 'vue-router';
+import barChart from '../components/barChartModal.vue'
 import deleteModal from '../components/deletePopModal.vue'
 import loaderIcon from "../components/loaderIcon.vue"
 import { getAllPollsApi } from '@/composables/pollingDetails';
+import { voteCounting } from '@/composables/pollingDetails';
 const router = useRouter();
 import { useStore } from 'vuex';
 import { computed, onMounted, ref } from 'vue';
 const deletePopUp = ref(false);
+const resultPopUp = ref(false);
 const store = useStore()
 const user = computed(() => {
   return store.state.user
@@ -66,16 +79,36 @@ const openSinglePoll = ((id) => {
   router.push(`/singlepoll/${id}`)
 })
 const pollId = ref(null);
-
+const pollOptionId = ref(null);
+const voteOptionPollId = ref(null);
 const openDeleteModal = (id) => {
   deletePopUp.value = !deletePopUp.value;
   pollId.value = id;
 };
-
+const showResult = () => {
+  resultPopUp.value = !resultPopUp.value;
+};
+const selectedOption = (optionId, pollId) => {
+  pollOptionId.value = optionId
+  voteOptionPollId.value = pollId
+  console.log(pollId)
+}
 const confirmDelete = async () => {
   await deletePoll(pollId.value);
   deletePopUp.value = false
 }
+const increaseVote = async () => {
+  await voteButton(pollOptionId.value, voteOptionPollId.value);
+  voteOptionPollId.value = null
+}
+const isOptionDisabled = (pollId) => {
+  const storedPollIds = JSON.parse(localStorage.getItem('voteOptionPollIds')) || [];
+  return storedPollIds.includes(pollId);
+};
+const votedOption = (optionId) => {
+  const storedPollOptionId = JSON.parse(localStorage.getItem('voteOptionIds')) || [];
+  return storedPollOptionId.includes(optionId);
+};
 const {
   polls,
   getMorePolls,
@@ -84,4 +117,7 @@ const {
   showMoreButtonDisable
 } = getAllPollsApi();
 
+const {
+  voteButton
+} = voteCounting();
 </script>

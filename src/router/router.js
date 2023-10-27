@@ -25,6 +25,12 @@ const routes = [
     beforeEnter: afterSucessfullloginsignup,
   },
   {
+    path: '/chart',
+    name: 'chart',
+    component: () => import('../components/barChartModal.vue'),
+    beforeEnter: commonBeforeEnter,
+  },
+  {
     path: '/signup',
     name: 'signup',
     component: () => import('../pages/signupPage.vue'),
