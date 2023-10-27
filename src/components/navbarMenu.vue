@@ -18,7 +18,7 @@ import { routesArr } from '../navMenuDetails/config.js';
 const router = useRouter();
 const activeButton = ref(null);
 const navigateRoute = (id, href) => {
-    router.push(`${href}`)
+    router.push(href)
     activeButton.value = id
 }
 </script>
