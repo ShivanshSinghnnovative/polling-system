@@ -42,8 +42,7 @@
                             <span class=" text-xl p-2">{{ item.optionTitle }}</span>
                             <span class="p-2 cursor-pointer" @click="updateExistingPollOption(item, index)">
                                 <font-awesome-icon icon="fa-solid fa-pen" /></span>
-                            <!-- <span class="p-2 cursor-pointer" @click="deleteExistingOption(index, item.id)" -->
-                            <span class="p-2 cursor-pointer" @click="openDeleteModal(index ,item.id)"
+                            <span class="p-2 cursor-pointer" @click="openDeleteModal(index, item.id)"
                                 v-if="newPoll.options.length > 3">
                                 <font-awesome-icon icon="fa-solid fa-trash" /></span>
                         </div>
@@ -83,7 +82,7 @@
 import { createUpdateandopenSinglePagePollApi } from "../composables/pollingDetails.js";
 import loaderIcon from '@/components/loaderIcon.vue';
 import deleteModal from '../components/deletePopModal.vue'
-import { onMounted , ref} from 'vue';
+import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 
 const route = useRoute();
@@ -97,17 +96,17 @@ if (id !== undefined && id !== null && id.trim() !== "") {
         }
     })
 }
-const deletePollId = ref(null); 
+const deletePollId = ref(null);
 const deletePopUp = ref(false);
 const indexPoll = ref(null);
-const openDeleteModal = (deletePollIndex,id) => {
-  deletePopUp.value = !deletePopUp.value;
-  deletePollId.value = id;
-  indexPoll.value= deletePollIndex;
+const openDeleteModal = (deletePollIndex, id) => {
+    deletePopUp.value = !deletePopUp.value;
+    deletePollId.value = id;
+    indexPoll.value = deletePollIndex;
 };
 const confirmDelete = async () => {
-  await deleteExistingOption(indexPoll.value , deletePollId.value);
-  deletePopUp.value = false
+    await deleteExistingOption(indexPoll.value, deletePollId.value);
+    deletePopUp.value = false
 }
 const {
     addNewPoll,
@@ -127,6 +126,4 @@ const {
     updateExistingOption,
     isLoading
 } = createUpdateandopenSinglePagePollApi();
-
-
 </script>
