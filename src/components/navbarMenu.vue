@@ -1,5 +1,5 @@
 <template>
-    <div  class=" inset-0 bg-black h-full  absolute bg-opacity-50" ></div>
+    <div class=" inset-0 bg-black h-full  absolute bg-opacity-50"></div>
     <div class="bg-gray-300 w-2/5 pt-1 left-1 absolute p-3">
         <div v-for="item in routesArr" :key="item.id">
             <button @click="navigateRoute(item.id, item.href)"

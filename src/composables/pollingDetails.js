@@ -83,23 +83,18 @@ export const createUpdateandopenSinglePagePollApi = () => {
   const updateTitle = async (updatedText, id) => {
     isLoading.value = true;
     if (updatedText.trim().length > 8) {
-      if (newPoll.options.length > 2) {
-        try {
-          await store.dispatch('updatePollTitle', {
-            title: updatedText.trim(),
-            createdBy: singlePoll.value.createdBy,
-            pollId: id
-          })
-          isLoading.value = false;
-          router.push('/polling')
-        }
-        catch (error) {
-          console.log(error)
-          isLoading.value = false;
-        }
-      } else {
+      try {
+        await store.dispatch('updatePollTitle', {
+          title: updatedText.trim(),
+          createdBy: singlePoll.value.createdBy,
+          pollId: id
+        })
         isLoading.value = false;
-        addError.value = "please add atleast 3 options";
+        router.push('/polling')
+      }
+      catch (error) {
+        console.log(error)
+        isLoading.value = false;
       }
     } else {
       addError.value = "title must be at least 9 characters "
@@ -149,7 +144,6 @@ export const createUpdateandopenSinglePagePollApi = () => {
   const deleteExistingOption = async (index, id) => {
     newPoll.options.splice(index, 1);
     i--
-    console.log(id);
     try {
       await store.dispatch("removeExistingOption", {
         id: id,
@@ -163,19 +157,18 @@ export const createUpdateandopenSinglePagePollApi = () => {
     newPoll.options.splice(index, 1);
     i--
   };
-  const updateExistingPollOption = (options, index) => {
-    console.log(options, index)
+  const updateExistingPollOption = (options) => {
     option.value = options;
   };
-  const addOptionInExistingPoll = async (newOption, id) => {
+  const addOptionInExistingPoll = async (newOption, pollId) => {
     if (option.value.trim() !== '') {
       try {
         await store.dispatch('addOptionInExistingPoll', {
-          pollId: id,
+          pollId: pollId,
           pollNewOption: newOption
         })
         option.value = "";
-        await getPollById(id)
+        await getPollById(pollId)
         if (singlePoll.value) {
           newPoll.title = singlePoll.value.title
           newPoll.options = singlePoll.value.optionList
@@ -188,19 +181,18 @@ export const createUpdateandopenSinglePagePollApi = () => {
       addError.value = "enter minimum 1 character";
     }
   };
-  const updateExistingOption = async (options, optionId, id) => {
+  const updateExistingOption = async (optionTitle, optionId, id) => {
     try {
       await store.dispatch('updatePollOption', {
-        option: options,
+        option: optionTitle,
         pollOptionId: optionId,
         pollId: id
       })
       option.value = "";
       if (option.value) {
-        newPoll.options[i] = options;
+        newPoll.options[i] = optionTitle;
         i++;
         option.value = "";
-        console.log("11ds")
       }
       addError.value = "";
     }

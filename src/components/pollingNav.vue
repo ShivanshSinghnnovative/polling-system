@@ -36,7 +36,7 @@
                 </div>
             </button>
             <div v-if="toggleLogout">
-                <logoutModal :user="user"  @closeModal="toggleLogoutModal"  />
+                <logoutModal :user="user" @closeModal="toggleLogoutModal" />
             </div>
         </div>
     </div>
@@ -55,7 +55,6 @@ const user = computed(() => {
 })
 onMounted(() => {
     store.commit('setUserDetails')
-    console.log()
 })
 const router = useRouter();
 const showMenu = ref(false);

@@ -43,7 +43,7 @@ const routes = [
     beforeEnter: commonBeforeEnter,
   },
   {
-    path: '/updatetitle/:id',
+    path: '/updatepoll/:id',
     name: 'updatetitles',
     component: () => import("../pages/createPoll.vue"),
     beforeEnter: commonBeforeEnter,

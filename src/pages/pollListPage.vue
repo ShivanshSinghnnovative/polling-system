@@ -11,7 +11,7 @@
           <font-awesome-icon icon="fa-solid fa-pen" /></span>
         <span class="p-2 cursor-pointer" @click="openDeleteModal(poll.id)" v-if="user && user.roleId === 1">
           <font-awesome-icon icon="fa-solid fa-trash" />
-          
+
         </span>
         <span class="p-2 cursor-pointer" @click="openSinglePoll(poll.id)">
           <font-awesome-icon icon="fa-solid fa-arrow-right" /></span>
@@ -27,7 +27,9 @@
       <hr>
     </div>
     <div v-if="deletePopUp">
-      <deleteModal @confirmDelete="confirmDelete" @openDeleteModal="openDeleteModal" />
+      <deleteModal @confirmDelete="confirmDelete" @openDeleteModal="openDeleteModal">
+        <template v-slot:title>Are you sure to delete Poll</template>
+      </deleteModal>
     </div>
     <div class="w-full ml-4/5  text-right ">
       <button @click="getMorePolls" v-if="showMoreButtonDisable"
@@ -58,12 +60,12 @@ onMounted(() => {
   store.commit('setUserDetails')
 })
 const updateTitle = ((id) => {
-  router.push(`/updatetitle/${id}`)
+  router.push(`/updatepoll/${id}`)
 })
 const openSinglePoll = ((id) => {
   router.push(`/singlepoll/${id}`)
 })
-const pollId = ref(null); 
+const pollId = ref(null);
 
 const openDeleteModal = (id) => {
   deletePopUp.value = !deletePopUp.value;

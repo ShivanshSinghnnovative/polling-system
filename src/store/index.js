@@ -47,7 +47,7 @@ export default createStore({
         state.polls = poll;
       }
     },
-    updatePollTitleUi(state, payload) {
+    updatePollList(state, payload) {
       let list = state.polls
       list.forEach((item) => {
         if (item.id == payload.pollId) {
@@ -88,8 +88,7 @@ export default createStore({
         commit("deleteExistingPoll", id);
         await api.delete(`poll/${id}`);
       } catch (error) {
-        console.log(error);
-        console.log(state);
+        console.log(error, state);
       }
     },
     async addOptionInExistingPoll({ state }, { pollNewOption, pollId }) {
@@ -98,17 +97,15 @@ export default createStore({
           optionTitle: pollNewOption
         });
       } catch (error) {
-        console.log(error);
-        console.log(state);
+        console.log(error, state);
       }
     },
     async removeExistingOption({ state, commit }, { id }) {
       try {
-        commit("deleteExistingPoll", id);
         await api.delete(`/option/delete/${id}`);
+        commit("deleteExistingPoll", id);
       } catch (error) {
-        console.log(error);
-        console.log(state);
+        console.log(error, state);
       }
     },
     async signup({ state }, { email, firstName, lastName, roleId, password }) {
@@ -143,12 +140,12 @@ export default createStore({
       }
     },
     async updatePollTitle({ state, commit }, { title, createdBy, pollId }) {
-      commit('updatePollTitleUi', { pollId, title })
       try {
         await api.put(`poll/${pollId}`, {
           title: title,
           createrBy: createdBy
         })
+        commit('updatePollList', { pollId, title })
       } catch (error) {
         console.log(error, state)
       }

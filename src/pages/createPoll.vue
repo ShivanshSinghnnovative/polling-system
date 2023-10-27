@@ -58,7 +58,9 @@
                 </div>
             </div>
             <div v-if="deletePopUp">
-                <deleteModal @confirmDelete="confirmDelete" @openDeleteModal="openDeleteModal" />
+                <deleteModal @confirmDelete="confirmDelete" @openDeleteModal="openDeleteModal">
+                    <template v-slot:title>Are you Sure to delete the Poll Option</template>
+                </deleteModal>
             </div>
             <h4 class=" text-sm text-red-500">{{ addError }}</h4>
             <div>
@@ -87,15 +89,15 @@ import { useRoute } from 'vue-router';
 
 const route = useRoute();
 const id = route.params.id
-if (id !== undefined && id !== null && id.trim() !== "") {
-    onMounted(async () => {
+onMounted(async () => {
+    if (id !== undefined && id !== null && id.trim() !== "") {
         await getPollById(id)
         if (singlePoll) {
             newPoll.title = singlePoll.value.title
             newPoll.options = singlePoll.value.optionList
         }
-    })
-}
+    }
+})
 const deletePollId = ref(null);
 const deletePopUp = ref(false);
 const indexPoll = ref(null);
