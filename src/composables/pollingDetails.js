@@ -221,9 +221,9 @@ export const createUpdateandopenSinglePagePollApi = () => {
 };
 
 
-export const voteCounting =()=>{
+export const voteCounting = () => {
   const store = useStore();
-  const voteButton = async (pollOptionId , pollId ) => {
+  const voteButton = async (pollOptionId, pollId) => {
     try {
       await store.dispatch("votepoll", {
         id: pollOptionId,
@@ -235,5 +235,47 @@ export const voteCounting =()=>{
   }
   return {
     voteButton,
+  }
+}
+
+export const usersList = () => {
+  const store = useStore();
+  onMounted(async () => {
+    await store.dispatch("fetchUsers", {
+      userPageNo: store.state.userPageNo,
+    });
+  });
+  const usersListData = computed(() => {
+    return store.getters.getUsers;
+  });
+  const getNextUsers = async () => {
+    try {
+      await store.dispatch("incrementUserPageNo");
+      await store.dispatch("fetchUsers", {
+        userPageNo: store.state.userPageNo,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const getPreviousUsers = async () => {
+    try {
+      await store.dispatch("decreaseUserPageNo");
+      await store.dispatch("fetchUsers", {
+        userPageNo: store.state.userPageNo,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  return {
+    usersListData,
+    getNextUsers,
+    getPreviousUsers,
+    stopPageIncrement: computed(() => {
+      return store.getters.getUsers;
+    })
+
   }
 }

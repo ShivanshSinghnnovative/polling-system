@@ -14,7 +14,8 @@ import {
     faTrash,
     faArrowRight,
     faUser,
-    faChartBar
+    faChartBar,
+    faArrowLeft,
 } from "@fortawesome/free-solid-svg-icons";
 import CanvasJSChart from '@canvasjs/vue-charts';
 library.add(faUser)
@@ -26,4 +27,5 @@ library.add(faPen);
 library.add(faTrash);
 library.add(faArrowRight);
 library.add(faChartBar);
+library.add(faArrowLeft);
 createApp(App).component("font-awesome-icon", FontAwesomeIcon).use(CanvasJSChart).use(store).use(router).mount('#app')

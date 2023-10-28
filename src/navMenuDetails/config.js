@@ -20,7 +20,7 @@ export const routesArr = [
     {
         id: '4',
         title: 'List User',
-        href: '/',
-        name: ''
+        href: '/listuser',
+        name: 'listuser'
     }
 ]

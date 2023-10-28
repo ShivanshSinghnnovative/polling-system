@@ -4,6 +4,7 @@ import api from "../composables/deatailsApi.js"
 export default createStore({
   state: {
     user: null,
+    userList:null,
     token: null,
     roles: [],
     signErr: null,
@@ -12,10 +13,14 @@ export default createStore({
     singlePoll: null,
     showMore: true,
     pageNo: ref(1),
+    userPageNo:ref(1),
   },
   mutations: {
     setRoles(state, roles) {
       state.roles = roles;
+    },
+    setUser(state,userList){
+      state.userList = userList;
     },
     setSinglePoll(state, poll) {
       state.singlePoll = poll
@@ -25,6 +30,9 @@ export default createStore({
     },
     setPageNo(state, pageNo) {
       state.pageNo = pageNo;
+    },
+    setUserPageNo(state, userPageNo) {
+      state.userPageNo = userPageNo;
     },
     clearLoginError(state) {
       state.loginError = null;
@@ -131,6 +139,15 @@ export default createStore({
         console.error("Error in getPolls action:", error);
       }
     },
+    async fetchUsers({commit} , {userPageNo}){
+      try{
+        const response = await api.get(`user/list/${userPageNo}?limit=10`);
+        if(response.data.rows!=0){
+        commit("setUser" , response.data.rows);}
+      } catch(error){
+        console.log(error);
+      }
+    },
     async getPollById({ commit }, { id }) {
       try {
         const res = await api.get(`poll/${id}`);
@@ -181,6 +198,13 @@ export default createStore({
     incrementPageNo({ commit, state }) {
       commit("setPageNo", state.pageNo + 1);
     },
+    incrementUserPageNo({ commit, state }) {
+      commit("setUserPageNo", state.userPageNo + 1);
+    },
+    decreaseUserPageNo({ commit, state }) {
+      if(state.userPageNo>1)
+      commit("setUserPageNo", state.userPageNo - 1);
+    },
     async login({ commit }, { email, password }) {
       try {
         commit('clearLoginError');
@@ -219,6 +243,8 @@ export default createStore({
     getSinglePoll: (state) => state.singlePoll,
     getShowMore: (state) => state.showMore,
     getPageNo: (state) => state.pageNo.value,
+    getUsers:(state) =>state.userList ,
+    getUserPageNo: (state) => state.userPageNo.value,
   },
   modules: {},
 });

@@ -37,6 +37,12 @@ const routes = [
     beforeEnter: commonBeforeEnter,
   },
   {
+    path: '/listuser',
+    name: 'listuser',
+    component: () => import('../pages/listUser.vue'),
+    beforeEnter: commonBeforeEnter,
+  },
+  {
     path: '/addpoll',
     name: 'createpoll',
     component: () => import("../pages/createPoll.vue"),
