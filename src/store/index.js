@@ -196,6 +196,22 @@ export default createStore({
         commit('setLoginError', error.response.data.message);
       }
     },
+    async votepoll({ state }, { id, pollId }) {
+      if(id !==null && id!== undefined){
+      try {
+        await api.post(`vote/count`, {
+          optionId: id
+        });
+        const storedPollIds = JSON.parse(localStorage.getItem('voteOptionPollIds')) || [];
+        storedPollIds.push(pollId);
+        localStorage.setItem('voteOptionPollIds', JSON.stringify(storedPollIds));
+        const storedOptionIds = JSON.parse(localStorage.getItem('voteOptionIds')) || [];
+        storedOptionIds.push(id);
+        localStorage.setItem('voteOptionIds', JSON.stringify(storedOptionIds));
+      } catch (error) {
+        console.log(error, state);
+      }}
+    }
   },
   getters: {
     getRoles: (state) => state.roles,

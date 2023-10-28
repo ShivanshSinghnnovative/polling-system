@@ -219,3 +219,21 @@ export const createUpdateandopenSinglePagePollApi = () => {
     isLoading
   };
 };
+
+
+export const voteCounting =()=>{
+  const store = useStore();
+  const voteButton = async (pollOptionId , pollId ) => {
+    try {
+      await store.dispatch("votepoll", {
+        id: pollOptionId,
+        pollId: pollId
+      })
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  return {
+    voteButton,
+  }
+}

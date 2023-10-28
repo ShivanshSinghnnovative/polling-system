@@ -11,7 +11,6 @@
       <h1 class="text-2xl mt-3">Options:</h1>
       <div v-for="option in singlePoll.optionList" :key="option.id" class="bg-white">
         <h3 class="pl-4 pt-4 mv:text-xs mv:pt-2 md:pt-3 md:text-lg ">
-          <input type="checkbox" class="p-4 cursor-pointer">
           {{ option.optionTitle }}
         </h3>
       </div>
