@@ -11,8 +11,8 @@
           <font-awesome-icon icon="fa-solid fa-pen" /></span>
         <span class="p-2 cursor-pointer" @click="openDeleteModal(poll.id)" v-if="user && user.roleId === 1">
           <font-awesome-icon icon="fa-solid fa-trash" />
-        </span>  
-        <span class="p-2 cursor-pointer" @click="showResult"  v-if="user && user.roleId === 1">
+        </span>
+        <span class="p-2 cursor-pointer" @click="showResult(poll.id)" v-if="user && user.roleId === 1">
           <font-awesome-icon :icon="['fas', 'chart-bar']" />
         </span>
         <span class="p-2 cursor-pointer" @click="openSinglePoll(poll.id)">
@@ -22,8 +22,8 @@
       <div v-for="opt in poll.optionList" :key="opt.id" class="bg-white">
         <h3 class="pl-4 pt-4 mv:text-xs mv:pt-2 md:pt-3 md:text-lg ">
           <input :disabled="isOptionDisabled(opt.pollId)" name="x" @click="selectedOption(opt.id, opt.pollId)"
-            type="radio" v-if="!votedOption(opt.id) " class="p-4 cursor-pointer">
-          <input v-else :disabled="isOptionDisabled(opt.pollId)" type="radio" checked >
+            type="radio" v-if="!votedOption(opt.id)" class="p-4 cursor-pointer">
+          <input v-else :disabled="isOptionDisabled(opt.pollId)" type="radio" checked>
           {{ opt.optionTitle }}
         </h3>
       </div>
@@ -34,7 +34,7 @@
       <hr>
     </div>
     <div v-if="resultPopUp">
-      <barChart @openResultModal="showResult"/>
+      <barChart @openResultModal="showResult(pollId)" :pollId="barChartPollId" />
     </div>
     <div v-if="deletePopUp">
       <deleteModal @confirmDelete="confirmDelete" @openDeleteModal="openDeleteModal">
@@ -81,17 +81,19 @@ const openSinglePoll = ((id) => {
 const pollId = ref(null);
 const pollOptionId = ref(null);
 const voteOptionPollId = ref(null);
+const barChartPollId = ref(null);
 const openDeleteModal = (id) => {
   deletePopUp.value = !deletePopUp.value;
   pollId.value = id;
 };
-const showResult = () => {
+const showResult = (id) => {
   resultPopUp.value = !resultPopUp.value;
+  barChartPollId.value = id;
+  console.log(id)
 };
 const selectedOption = (optionId, pollId) => {
   pollOptionId.value = optionId
   voteOptionPollId.value = pollId
-  console.log(pollId)
 }
 const confirmDelete = async () => {
   await deletePoll(pollId.value);
