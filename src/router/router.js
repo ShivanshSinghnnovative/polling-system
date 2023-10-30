@@ -2,6 +2,9 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 const userIsLoggedIn = () => {
   return localStorage.getItem('token') !== null;
 }
+const userIsAdmin = () =>{
+  return localStorage.getItem('user.roleId') == 1 ;
+}
 const commonBeforeEnter = (to, from, next) => {
   if (userIsLoggedIn()) {
     next();
@@ -40,25 +43,26 @@ const routes = [
     path: '/listuser',
     name: 'listuser',
     component: () => import('../pages/listUser.vue'),
-    beforeEnter: commonBeforeEnter,
+    beforeEnter: commonBeforeEnter && userIsAdmin
+
   },
   {
     path: '/addpoll',
     name: 'createpoll',
     component: () => import("../pages/createPoll.vue"),
-    beforeEnter: commonBeforeEnter,
+    beforeEnter: commonBeforeEnter && userIsAdmin
   },
   {
     path: '/updatepoll/:id',
     name: 'updatetitles',
     component: () => import("../pages/createPoll.vue"),
-    beforeEnter: commonBeforeEnter,
+    beforeEnter: commonBeforeEnter && userIsAdmin
   },
   {
     path: '/singlepoll/:id',
     name: 'singlepoll',
     component: () => import("../pages/singlePoll.vue"),
-    beforeEnter: commonBeforeEnter,
+    beforeEnter: commonBeforeEnter && userIsAdmin
   }
 ];
 const router = createRouter({

@@ -19,7 +19,7 @@ export default createStore({
     setRoles(state, roles) {
       state.roles = roles;
     },
-    setUser(state, userList) {
+    setUserList(state, userList) {
       state.userList = userList;
     },
     setSinglePoll(state, poll) {
@@ -143,7 +143,7 @@ export default createStore({
       try {
         const response = await api.get(`user/list/${userPageNo}?limit=${limits.value}`);
         if (response.data.rows != 0) {
-          commit("setUser", response.data.rows);
+          commit("setUserList", response.data.rows);
         }
       } catch (error) {
         console.log(error);
