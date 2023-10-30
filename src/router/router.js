@@ -13,6 +13,13 @@ const commonBeforeEnter = (to, from, next) => {
     next('/');
   }
 };
+const commonBeforeEnterForPolling = (to, from, next) => {
+  if (userIsLoggedIn() ) {
+    next();
+  } else {
+    next('/');
+  }
+};
 const afterSucessfullloginsignup = (to, from, next) => {
 
   if (userIsLoggedIn()) {
@@ -38,7 +45,7 @@ const routes = [
     path: '/polling',
     name: 'polling',
     component: () => import('../pages/pollListPage.vue'),
-    beforeEnter: commonBeforeEnter,
+    beforeEnter: commonBeforeEnterForPolling,
   },
   {
     path: '/listuser',
