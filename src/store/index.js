@@ -4,7 +4,7 @@ import api from "../composables/deatailsApi.js"
 export default createStore({
   state: {
     user: null,
-    userList:null,
+    userList: null,
     token: null,
     roles: [],
     signErr: null,
@@ -13,13 +13,13 @@ export default createStore({
     singlePoll: null,
     showMore: true,
     pageNo: ref(1),
-    userPageNo:ref(1),
+    userPageNo: ref(1),
   },
   mutations: {
     setRoles(state, roles) {
       state.roles = roles;
     },
-    setUser(state,userList){
+    setUser(state, userList) {
       state.userList = userList;
     },
     setSinglePoll(state, poll) {
@@ -139,12 +139,13 @@ export default createStore({
         console.error("Error in getPolls action:", error);
       }
     },
-    async fetchUsers({commit} , {userPageNo}){
-      try{
-        const response = await api.get(`user/list/${userPageNo}?limit=10`);
-        if(response.data.rows!=0){
-        commit("setUser" , response.data.rows);}
-      } catch(error){
+    async fetchUsers({ commit }, { userPageNo, limits }) {
+      try {
+        const response = await api.get(`user/list/${userPageNo}?limit=${limits.value}`);
+        if (response.data.rows != 0) {
+          commit("setUser", response.data.rows);
+        }
+      } catch (error) {
         console.log(error);
       }
     },
@@ -202,8 +203,8 @@ export default createStore({
       commit("setUserPageNo", state.userPageNo + 1);
     },
     decreaseUserPageNo({ commit, state }) {
-      if(state.userPageNo>1)
-      commit("setUserPageNo", state.userPageNo - 1);
+      if (state.userPageNo > 1)
+        commit("setUserPageNo", state.userPageNo - 1);
     },
     async login({ commit }, { email, password }) {
       try {
@@ -221,20 +222,21 @@ export default createStore({
       }
     },
     async votepoll({ state }, { id, pollId }) {
-      if(id !==null && id!== undefined){
-      try {
-        await api.post(`vote/count`, {
-          optionId: id
-        });
-        const storedPollIds = JSON.parse(localStorage.getItem('voteOptionPollIds')) || [];
-        storedPollIds.push(pollId);
-        localStorage.setItem('voteOptionPollIds', JSON.stringify(storedPollIds));
-        const storedOptionIds = JSON.parse(localStorage.getItem('voteOptionIds')) || [];
-        storedOptionIds.push(id);
-        localStorage.setItem('voteOptionIds', JSON.stringify(storedOptionIds));
-      } catch (error) {
-        console.log(error, state);
-      }}
+      if (id !== null && id !== undefined) {
+        try {
+          await api.post(`vote/count`, {
+            optionId: id
+          });
+          const storedPollIds = JSON.parse(localStorage.getItem('voteOptionPollIds')) || [];
+          storedPollIds.push(pollId);
+          localStorage.setItem('voteOptionPollIds', JSON.stringify(storedPollIds));
+          const storedOptionIds = JSON.parse(localStorage.getItem('voteOptionIds')) || [];
+          storedOptionIds.push(id);
+          localStorage.setItem('voteOptionIds', JSON.stringify(storedOptionIds));
+        } catch (error) {
+          console.log(error, state);
+        }
+      }
     }
   },
   getters: {
@@ -243,7 +245,7 @@ export default createStore({
     getSinglePoll: (state) => state.singlePoll,
     getShowMore: (state) => state.showMore,
     getPageNo: (state) => state.pageNo.value,
-    getUsers:(state) =>state.userList ,
+    getUsers: (state) => state.userList,
     getUserPageNo: (state) => state.userPageNo.value,
   },
   modules: {},
