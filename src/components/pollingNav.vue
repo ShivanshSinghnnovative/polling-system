@@ -10,7 +10,7 @@
                 v-for="item in routesArr" :key="item.id">
                 <button @click="navigateRoute(item.id, item.href)"
                     class="rounded-md text-center text-white mv:text-xx sm:text-xy text-md mr-5 mt-1 mb-2 font-serif p-2 pr-3 pl-3"
-                    :class="currentRoute === item.name ? 'bg-blue-900' : 'bg-green-900'">
+                    :class="currentRoute === item.name ? 'bg-blue-950' : 'bg-green-900'">
                     {{ item.title }}
                 </button>
             </div>

@@ -220,10 +220,9 @@ export const createUpdateandopenSinglePagePollApi = () => {
   };
 };
 
-
-export const voteCounting =()=>{
+export const voteCounting = () => {
   const store = useStore();
-  const voteButton = async (pollOptionId , pollId ) => {
+  const voteButton = async (pollOptionId, pollId) => {
     try {
       await store.dispatch("votepoll", {
         id: pollOptionId,
