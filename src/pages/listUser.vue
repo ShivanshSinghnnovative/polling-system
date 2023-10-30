@@ -1,14 +1,15 @@
 <template>
-  <span class="h-5/5 mt-2/4 text-center text-7xl flex justify-center" v-if="isLoading">
-    <loaderIcon />
-  </span>
-  <div v-else class="h-screen p-6">
+  <div class="h-screen p-6">
     <div class="bg-green-900 text-white border-2 border-gray-400 text-xl flex justify-between">
       <h1 class="p-3 ml-4">Name</h1>
       <h1 class="p-3">Email</h1>
       <h1 class="p-3 mr-4">Role</h1>
     </div>
-    <div v-for="users in usersListData" :key="users.id" class="flex justify-between text-xl border-2 border-gray-200">
+    <span v-if="isLoading" class="h-5/5 mt-2/4 text-center text-7xl flex justify-center">
+      <loaderIcon />
+    </span>
+    <div v-else v-for="users in usersListData" :key="users.id"
+      class="flex justify-between text-xl border-2 border-gray-200">
       <h1 class="p-3 ml-4">
         <font-awesome-icon :icon="['fas', 'user']" />
         {{ users.firstName }} {{ users.lastName }}
@@ -20,12 +21,15 @@
         {{ getRole(users.roleId) }}
       </h1>
     </div>
-    <padination />
+    <padination @getNextUsers="getNextUsers" @getPreviousUsers="getPreviousUsers" @onLimitChange="onLimitChange"
+      :userPageNo="store.state.userPageNo"></padination>
   </div>
 </template>
 
 <script setup>
 import { usersList } from "../composables/userListandCreateUser.js";
+import { useStore } from "vuex";
+const store = useStore();
 import loaderIcon from "../components/loaderIcon.vue";
 import padination from "../components/paginationDiv.vue";
 const getRole = (roleId) => {
@@ -40,5 +44,5 @@ const getRole = (roleId) => {
       return "Unknown";
   }
 };
-const { usersListData, isLoading } = usersList();
+const { usersListData, isLoading, getPreviousUsers, getNextUsers, onLimitChange } = usersList();
 </script>

@@ -34,6 +34,9 @@ export default createStore({
     setUserPageNo(state, userPageNo) {
       state.userPageNo = userPageNo;
     },
+    clearUsers(state) {
+      state.userList = "";
+    },
     clearLoginError(state) {
       state.loginError = null;
     },
@@ -141,7 +144,7 @@ export default createStore({
     },
     async fetchUsers({ commit }, { userPageNo, limits }) {
       try {
-        const response = await api.get(`user/list/${userPageNo}?limit=${limits.value}`);
+        const response = await api.get(`user/list/${userPageNo}?limit=${limits}`);
         if (response.data.rows != 0) {
           commit("setUserList", response.data.rows);
         }
@@ -200,7 +203,8 @@ export default createStore({
       commit("setPageNo", state.pageNo + 1);
     },
     incrementUserPageNo({ commit, state }) {
-      commit("setUserPageNo", state.userPageNo + 1);
+      if (state.userList)
+        commit("setUserPageNo", state.userPageNo + 1);
     },
     decreaseUserPageNo({ commit, state }) {
       if (state.userPageNo > 1)

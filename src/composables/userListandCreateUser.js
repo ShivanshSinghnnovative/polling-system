@@ -6,11 +6,10 @@ export const usersList = () => {
     const store = useStore();
     const limits = ref(10);
     onMounted(async () => {
-        store.state.userPageNo = 1;
         isLoading.value = true;
         await store.dispatch("fetchUsers", {
             userPageNo: store.state.userPageNo,
-            limits: limits,
+            limits: limits.value,
         });
         isLoading.value = false;
     });
@@ -18,29 +17,48 @@ export const usersList = () => {
         return store.getters.getUsers;
     });
     const getNextUsers = async () => {
-        isLoading.value = true;
-        try {
-            await store.dispatch("incrementUserPageNo");
-            await store.dispatch("fetchUsers", {
-                userPageNo: store.state.userPageNo,
-                limits: limits,
-            });
+        if (usersListData.value.length >= limits.value) {
+            try {
+                isLoading.value = true;
+                await store.dispatch("incrementUserPageNo");
+                store.commit("clearUsers");
+                await store.dispatch("fetchUsers", {
+                    userPageNo: store.state.userPageNo,
+                    limits: limits.value,
+                });
+                isLoading.value = false;
+            } catch (error) {
+                console.log(error);
+                isLoading.value = false;
+            }
+        } else {
             isLoading.value = false;
+        }
+    };
+    const getPreviousUsers = async () => {
+        try {
+            isLoading.value = true;
+            if (store.state.userPageNo > 1) {
+                await store.dispatch("decreaseUserPageNo");
+                await store.dispatch("fetchUsers", {
+                    userPageNo: store.state.userPageNo,
+                    limits: limits.value,
+                });
+                isLoading.value = false;
+            }
         } catch (error) {
             console.log(error);
             isLoading.value = false;
         }
     };
-    const getPreviousUsers = async () => {
-        isLoading.value = true;
+    const onLimitChange = async (limit) => {
+        limits.value = limit;
         try {
-            if (store.state.userPageNo > 1) {
-                await store.dispatch("decreaseUserPageNo");
-                await store.dispatch("fetchUsers", {
-                    userPageNo: store.state.userPageNo,
-                    limits: limits,
-                });
-            }
+            isLoading.value = true;
+            await store.dispatch("fetchUsers", {
+                userPageNo: store.state.userPageNo,
+                limits: limit,
+            });
             isLoading.value = false;
         } catch (error) {
             console.log(error);
@@ -54,5 +72,6 @@ export const usersList = () => {
         getPreviousUsers,
         isLoading,
         limits,
+        onLimitChange,
     };
 };
