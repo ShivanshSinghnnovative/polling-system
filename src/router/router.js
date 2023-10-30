@@ -55,6 +55,13 @@ const routes = [
 
   },
   {
+    path: '/createuser',
+    name: 'createuser',
+    component: () => import('../pages/createUser.vue'),
+    beforeEnter: commonBeforeEnter 
+
+  },
+  {
     path: '/addpoll',
     name: 'createpoll',
     component: () => import("../pages/createPoll.vue"),

@@ -2,7 +2,8 @@
     <div class="w-full h-screen bg-gray-200 text-center flex flex-col justify-center">
         <form class="bg-white md:p-6 mv:p-1 lg:w-2/5 rounded-md shadow-md m-auto md:w-3/5 sm:w-4/5 mv:w-5/6"
             @submit.prevent="createAccount">
-            <h1 class="md:text-3xl font-bold md:pt-1 md:p-2 mv:p-1 mv:text-lg">Sign Up</h1>
+            <h1 v-if="route.name == signup" class="md:text-3xl font-bold md:pt-1 md:p-2 mv:p-1 mv:text-lg">Sign Up</h1>
+            <h1 v-else class="md:text-3xl font-bold md:pt-1 md:p-2 mv:p-1 mv:text-lg">Create User</h1>
             <div class="flex flex-col">
                 <input type="text"
                     class="border-black border-2 xll:text-3xl md:p-2 mv:p-1 md:m-4 mv:m-2 mb-2 md:text-xl md:mb-1 mv:text-base rounded-md w-5/5"
@@ -50,23 +51,44 @@
                 <div class="text-red-500 text-left text-lg pl-2" v-if="userExist.length != 0">
                     {{ userExist }}
                 </div>
-                <button
-                    class="md:m-4 mv:m-2 xll:text-3xl rounded-md md:mb-1 md:p-2 mv:p-1 bg-green-700 text-white md:text-3xl mv:text-base cursor-pointer border-none">
-                    <span v-if="isLoading">  <loaderIcon/> </span>
-                    <span v-else>Create account</span>
-                </button>
-                <div v-if="openSuccesModal"
-                    class="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center">
-                    <div class="bg-white p-20 rounded-md shadow-md text-center">
-                        <sucessSignup>
-                            <template v-slot:content>You have successfully registered</template>
-                        </sucessSignup>
+                <div v-if="route.name == 'signup'">
+                    <button
+                        class="md:m-4 mv:m-2 xll:text-3xl rounded-md md:mb-1 md:p-2 mv:p-1 bg-green-700 text-white md:text-3xl mv:text-base cursor-pointer border-none">
+                        <span v-if="isLoading">
+                            <loaderIcon />
+                        </span>
+                        <span v-else>Create account</span>
+                    </button>
+                    <div v-if="openSuccesModal"
+                        class="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center">
+                        <div class="bg-white p-20 rounded-md shadow-md text-center">
+                            <sucessSignup>
+                                <template v-slot:content>You have successfully registered</template>
+                            </sucessSignup>
+                        </div>
+                    </div>
+                    <div>
+                        <p class="mv:text-xs md:text-xl md:mt-2">Already a Member ?</p>
+                        <router-link to="/"><a class="text-green-700 cursor-pointer mt-4 mv:text-xs md:text-xl">Log
+                                In</a></router-link>
                     </div>
                 </div>
-                <div>
-                    <p class="mv:text-xs md:text-xl md:mt-2">Already a Member ?</p>
-                    <router-link to="/"><a class="text-green-700 cursor-pointer mt-4 mv:text-xs md:text-xl">Log
-                            In</a></router-link>
+                <div v-else>
+                    <button
+                        class="md:m-4 mv:m-2 xll:text-3xl rounded-md md:mb-1 md:p-2 mv:p-1 bg-green-700 text-white md:text-3xl mv:text-base cursor-pointer border-none">
+                        <span v-if="isLoading">
+                            <loaderIcon />
+                        </span>
+                        <span v-else>Create User</span>
+                    </button>
+                    <div v-if="openSuccesModal"
+                        class="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center">
+                        <div class="bg-white p-20 rounded-md shadow-md text-center">
+                            <sucessSignup>
+                                <template v-slot:content>You have successfully created a user </template>
+                            </sucessSignup>
+                        </div>
+                    </div>
                 </div>
             </div>
         </form>
@@ -77,7 +99,9 @@
 import { signupApi } from "../composables/loginSignup.js";
 import loaderIcon from "../components/loaderIcon.vue"
 import sucessSignup from "../components/sucessSignupModal.vue";
+import { useRoute } from 'vue-router';
 
+const route = useRoute();
 const {
     createAccount,
     signUser,

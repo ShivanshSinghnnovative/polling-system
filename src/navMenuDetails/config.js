@@ -14,8 +14,8 @@ export const routesArr = [
     {
         id: '3',
         title: 'Create User',
-        href: '/',
-        name: ''
+        href: '/createuser',
+        name: 'createuser'
     },
     {
         id: '4',
