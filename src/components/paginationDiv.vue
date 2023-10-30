@@ -21,13 +21,11 @@
 import { usersList } from "../composables/userListandCreateUser.js";
 import { defineEmits, defineProps } from "vue";
 defineProps(["userPageNo"])
-defineEmits([" getNextUsers", "getPreviousUsers", "onLimitChange"]);
-
+defineEmits(["getNextUsers", "getPreviousUsers", "onLimitChange"]);
 const limitOptions = [
     { label: "10", value: 10 },
     { label: "20", value: 20 },
     { label: "30", value: 30 },
 ];
-
 const { limits } = usersList();
 </script>
