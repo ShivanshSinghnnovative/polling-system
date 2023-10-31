@@ -51,7 +51,7 @@
                 <div class="text-red-500 text-left text-lg pl-2" v-if="userExist.length != 0">
                     {{ userExist }}
                 </div>
-                <div v-if="route.name == 'signup'">
+                <div v-if="route.name == 'register'">
                     <button
                         class="md:m-4 mv:m-2 xll:text-3xl rounded-md md:mb-1 md:p-2 mv:p-1 bg-green-700 text-white md:text-3xl mv:text-base cursor-pointer border-none">
                         <span v-if="isLoading">

@@ -98,7 +98,6 @@ export const signupApi = () => {
                             lastName: signUser.lastName,
                             routecheck: (route.name === 'register' ? 'true' : 'false')
                         });
-                        console.log(route.name, "jdsnfgok")
                         if (!signErr.value) {
                             openSuccesModal.value = true;
                         } else {

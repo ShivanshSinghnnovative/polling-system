@@ -130,11 +130,9 @@ export default createStore({
           roleId: roleId,
           password: password
         });
-        console.log(routecheck, "jdsnfgok")
       } catch (error) {
         state.signErr = error.response.data
         console.log(error)
-        console.log(routecheck, "jdsnfgok")
       }
     },
     async getPolls({ commit }, { pageNo, limit }) {
