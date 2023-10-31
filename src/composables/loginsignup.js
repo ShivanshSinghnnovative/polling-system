@@ -90,24 +90,15 @@ export const signupApi = () => {
                     passwordCheck.value = "";
                     emailCheck.value = "";
                     try {
-                        if (route.name == 'signup') {
-                            await store.dispatch("signup", {
-                                email: signUser.email,
-                                password: signUser.password,
-                                roleId: signUser.roleId,
-                                firstName: signUser.firstName,
-                                lastName: signUser.lastName,
-                            });
-                        }
-                        else {
-                            await store.dispatch("createuser", {
-                                email: signUser.email,
-                                password: signUser.password,
-                                roleId: signUser.roleId,
-                                firstName: signUser.firstName,
-                                lastName: signUser.lastName,
-                            });
-                        }
+                        await store.dispatch("signup", {
+                            email: signUser.email,
+                            password: signUser.password,
+                            roleId: signUser.roleId,
+                            firstName: signUser.firstName,
+                            lastName: signUser.lastName,
+                            routecheck: (route.name === 'register' ? 'true' : 'false')
+                        });
+                        console.log(route.name, "jdsnfgok")
                         if (!signErr.value) {
                             openSuccesModal.value = true;
                         } else {

@@ -36,8 +36,8 @@ const routes = [
     beforeEnter: afterSucessfullloginsignup,
   },
   {
-    path: '/signup',
-    name: 'signup',
+    path: '/register',
+    name: 'register',
     component: () => import('../pages/signupPage.vue'),
     beforeEnter: afterSucessfullloginsignup,
   },
@@ -56,7 +56,7 @@ const routes = [
   },
   {
     path: '/createuser',
-    name: 'createuser',
+    name: 'create',
     component: () => import('../pages/createUser.vue'),
     beforeEnter: commonBeforeEnter 
 
@@ -85,7 +85,7 @@ const router = createRouter({
   routes
 })
 router.beforeEach((to, from, next) => {
-  const isLoggedOut = (to.name !== 'login' && to.name !== 'signup' && !userIsLoggedIn());
+  const isLoggedOut = (to.name !== 'login' && to.name !== 'register' && !userIsLoggedIn());
   if (isLoggedOut) {
     next({ name: 'login' });
   } else {

@@ -119,34 +119,22 @@ export default createStore({
         console.log(error, state);
       }
     },
-    async signup({ state }, { email, firstName, lastName, roleId, password }) {
+    async signup({ state }, { email, firstName, lastName, roleId, password, routecheck }) {
       try {
         state.signErr = null
-        await api.post("user/register", {
+        const registrationRoute = (routecheck == 'true' ? 'register' : 'create');
+        await api.post(`user/${registrationRoute}`, {
           email: email,
           firstName: firstName,
           lastName: lastName,
           roleId: roleId,
           password: password
         });
+        console.log(routecheck, "jdsnfgok")
       } catch (error) {
         state.signErr = error.response.data
         console.log(error)
-      }
-    },
-    async createuser({ state }, { email, firstName, lastName, roleId, password }) {
-      try {
-        state.signErr = null
-        await api.post("user/create", {
-          email: email,
-          firstName: firstName,
-          lastName: lastName,
-          roleId: roleId,
-          password: password
-        });
-      } catch (error) {
-        state.signErr = error.response.data
-        console.log(error)
+        console.log(routecheck, "jdsnfgok")
       }
     },
     async getPolls({ commit }, { pageNo, limit }) {
