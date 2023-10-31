@@ -134,6 +134,21 @@ export default createStore({
         console.log(error)
       }
     },
+    async createuser({ state }, { email, firstName, lastName, roleId, password }) {
+      try {
+        state.signErr = null
+        await api.post("user/create", {
+          email: email,
+          firstName: firstName,
+          lastName: lastName,
+          roleId: roleId,
+          password: password
+        });
+      } catch (error) {
+        state.signErr = error.response.data
+        console.log(error)
+      }
+    },
     async getPolls({ commit }, { pageNo, limit }) {
       try {
         const response = await api.get(`poll/list/${pageNo}?limit=${limit}`,);

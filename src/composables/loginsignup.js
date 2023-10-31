@@ -1,5 +1,5 @@
 import { reactive, ref, computed } from "vue";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import { useStore } from "vuex";
 import { onMounted } from "vue";
 export const loginApi = () => {
@@ -44,6 +44,7 @@ export const loginApi = () => {
     };
 };
 export const signupApi = () => {
+    const route = useRoute();
     const store = useStore();
     const router = useRouter();
     const signUser = reactive({
@@ -89,13 +90,24 @@ export const signupApi = () => {
                     passwordCheck.value = "";
                     emailCheck.value = "";
                     try {
-                        await store.dispatch("signup", {
-                            email: signUser.email,
-                            password: signUser.password,
-                            roleId: signUser.roleId,
-                            firstName: signUser.firstName,
-                            lastName: signUser.lastName,
-                        });
+                        if (route.name == 'signup') {
+                            await store.dispatch("signup", {
+                                email: signUser.email,
+                                password: signUser.password,
+                                roleId: signUser.roleId,
+                                firstName: signUser.firstName,
+                                lastName: signUser.lastName,
+                            });
+                        }
+                        else {
+                            await store.dispatch("createuser", {
+                                email: signUser.email,
+                                password: signUser.password,
+                                roleId: signUser.roleId,
+                                firstName: signUser.firstName,
+                                lastName: signUser.lastName,
+                            });
+                        }
                         if (!signErr.value) {
                             openSuccesModal.value = true;
                         } else {
