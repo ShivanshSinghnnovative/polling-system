@@ -2,8 +2,8 @@
     <div class="w-full h-screen bg-gray-200 text-center flex flex-col justify-center">
         <form class="bg-white md:p-6 mv:p-1 lg:w-2/5 rounded-md shadow-md m-auto md:w-3/5 sm:w-4/5 mv:w-5/6"
             @submit.prevent="createAccount">
-            <h1 v-if="route.name == signup" class="md:text-3xl font-bold md:pt-1 md:p-2 mv:p-1 mv:text-lg">Sign Up</h1>
-            <h1 v-else class="md:text-3xl font-bold md:pt-1 md:p-2 mv:p-1 mv:text-lg">Create User</h1>
+            <h1 class="md:text-3xl font-bold md:pt-1 md:p-2 mv:p-1 mv:text-lg"> {{ route.name === 'signup' ? 'Sign Up' :
+                'Create User' }}</h1>
             <div class="flex flex-col">
                 <input type="text"
                     class="border-black border-2 xll:text-3xl md:p-2 mv:p-1 md:m-4 mv:m-2 mb-2 md:text-xl md:mb-1 mv:text-base rounded-md w-5/5"
