@@ -1,5 +1,5 @@
 import { reactive, ref, computed } from "vue";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import { useStore } from "vuex";
 import { onMounted } from "vue";
 export const loginApi = () => {
@@ -44,6 +44,7 @@ export const loginApi = () => {
     };
 };
 export const signupApi = () => {
+    const route = useRoute();
     const store = useStore();
     const router = useRouter();
     const signUser = reactive({
@@ -95,6 +96,7 @@ export const signupApi = () => {
                             roleId: signUser.roleId,
                             firstName: signUser.firstName,
                             lastName: signUser.lastName,
+                            routecheck: (route.name === 'register' ? 'true' : 'false')
                         });
                         if (!signErr.value) {
                             openSuccesModal.value = true;

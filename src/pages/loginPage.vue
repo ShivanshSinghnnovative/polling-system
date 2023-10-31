@@ -21,7 +21,7 @@
                 </button>
                 <div>
                     <p class="md:text-xl mv:text-xs">Don't have an account ?</p>
-                    <router-link to="/signup">
+                    <router-link to="/register">
                         <a class="text-green-700 md:text-xl mv:text-xs cursor-pointer mt-4">create an account</a>
                     </router-link>
                 </div>

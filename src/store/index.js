@@ -119,10 +119,11 @@ export default createStore({
         console.log(error, state);
       }
     },
-    async signup({ state }, { email, firstName, lastName, roleId, password }) {
+    async signup({ state }, { email, firstName, lastName, roleId, password, routecheck }) {
       try {
         state.signErr = null
-        await api.post("user/register", {
+        const registrationRoute = (routecheck == 'true' ? 'register' : 'create');
+        await api.post(`user/${registrationRoute}`, {
           email: email,
           firstName: firstName,
           lastName: lastName,
